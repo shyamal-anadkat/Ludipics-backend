@@ -4,6 +4,7 @@ exports = module.exports = function(app, mongoose) {
   var ludiCategorySchema = new mongoose.Schema({
     name: { type: String, default: '' },
     description: { type: String, default: '' },
+    pivot: { type: String, default: '' },
     image: {
       fileLocation: { type: String, default: '' }
     }

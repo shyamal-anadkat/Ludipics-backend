@@ -86,7 +86,7 @@ exports = module.exports = function(app, passport) {
   app.get('/api/account/settings/facebook/callback', account.connectFacebook);
   app.get('/api/account/settings/facebook/disconnect', account.disconnectFacebook);
 
-  //-----athorization required api-----
+  //-----authorization required api-----
   app.all('/api/admin*', apiEnsureAuthenticated);
   app.all('/api/admin*', apiEnsureAdmin);
   app.get('/api/admin', admin.getStats);
