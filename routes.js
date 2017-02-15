@@ -10,6 +10,7 @@ var adminAdministrator = require('./service/admin/administrator');
 var adminGroup = require('./service/admin/admin-group');
 var adminStatus = require('./service/admin/status');
 var adminCategory = require('./service/admin/category');
+var ludiCategory = require('./service/admin/ludiCategory');
 
 function useAngular(req, res, next){
   res.sendFile(require('path').join(__dirname, './client/dist/index.html'));
@@ -66,6 +67,10 @@ exports = module.exports = function(app, passport) {
   app.get('/api/login/facebook/callback', security.loginFacebook);
   app.get('/api/login/google/callback', security.loginGoogle);
   app.post('/api/logout', security.logout);
+
+  ///-----Non-auth Ludi calls-----
+  app.get('/api/ludiCategories', ludiCategory.find);
+  app.get('/api/ludiCategories/:id', ludiCategory.read);
 
   //-----authentication required api-----
   app.all('/api/account*', apiEnsureAuthenticated);

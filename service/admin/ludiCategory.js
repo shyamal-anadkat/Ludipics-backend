@@ -36,7 +36,7 @@ var ludiCategory = {
 
 	    workflow.on('validate', function () {
 			if (!req.user.roles.admin.isMemberOf('root')) {
-        		workflow.outcome.errors.push('You may not create statuses.');
+        		workflow.outcome.errors.push('You may not create LudiCategories.');
         		return workflow.emit('response');
       		}
       		if (!req.body.pivot) {
@@ -89,7 +89,7 @@ var ludiCategory = {
     	workflow.emit('validate');
   	},
   	read: function (req, res, next) {
-	    req.app.db.models.LudiCategory.findById(req.params.id).exec(function (err, category) {
+	    req.app.db.models.LudiCategory.findById(req.params.id).exec(function (err, ludiCategory) {
 	      if (err) {
 	        return next(err);
 	      }
