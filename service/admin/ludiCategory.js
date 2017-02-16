@@ -44,6 +44,8 @@ var ludiCategory = {
 	      //workflow.emit('duplicateLudiCategoryCheck');
 	      workflow.emit('createLudiCategory');
 	    });
+	    // TODO: worry about duplicate named categories?
+
 	    /*
 	    workflow.on('duplicateLudiCategoryCheck', function () {
 	      req.app.db.models.LudiCategory.find({name:req.body.name}).exec(function (err, ludiCategory) {

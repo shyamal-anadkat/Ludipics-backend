@@ -9,6 +9,10 @@ exports = module.exports = function(app, mongoose) {
       admin: { type: mongoose.Schema.Types.ObjectId, ref: 'Admin' },
       account: { type: mongoose.Schema.Types.ObjectId, ref: 'Account' }
     },
+    current_group: {
+      group_id: { type: mongoose.Schema.Types.ObjectId, ref: 'LudiGroup' },
+      join_time: { type: Date, default: Date.now }
+    },
     isActive: String,
     timeCreated: { type: Date, default: Date.now },
     resetPasswordToken: String,

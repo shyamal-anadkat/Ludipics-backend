@@ -11,6 +11,7 @@ var adminGroup = require('./service/admin/admin-group');
 var adminStatus = require('./service/admin/status');
 var adminCategory = require('./service/admin/category');
 var ludiCategory = require('./service/admin/ludiCategory');
+var ludiGroups = require('./service/ludiGroup');
 
 function useAngular(req, res, next){
   res.sendFile(require('path').join(__dirname, './client/dist/index.html'));
@@ -71,6 +72,15 @@ exports = module.exports = function(app, passport) {
   ///-----Non-auth Ludi calls-----
   app.get('/api/ludiCategories', ludiCategory.find);
   app.get('/api/ludiCategories/:id', ludiCategory.read);
+  app.get('/api/ludiGroups', ludiGroups.find);
+  app.get('/api/ludiGroups/:id', ludiGroups.read)
+
+  ///-----Auth Ludi calls------
+
+  app.all('/api/auth*', apiEnsureAuthenticated);
+  app.all('/api/auth*', apiEnsureAccount);
+
+  app.post('/api/auth/category', ludiGroups.place); // add user to open group
 
   //-----authentication required api-----
   app.all('/api/account*', apiEnsureAuthenticated);
@@ -152,9 +162,11 @@ exports = module.exports = function(app, passport) {
   app.put('/api/admin/categories/:id', adminCategory.update);
   app.delete('/api/admin/categories/:id', adminCategory.delete);
 
-  //admin > ludicategories
+  //admin > Ludi calls
   app.post('/api/admin/ludiCategories', ludiCategory.create);
   app.delete('/api/admin/ludiCategories/:id', ludiCategory.delete);
+  app.post('/api/admin/ludiGroups', ludiGroups.create);
+  app.delete('/api/admin/ludiGroups/:id', ludiGroups.delete);
 
   //admin > search
   app.get('/api/admin/search', admin.search);

@@ -65,11 +65,43 @@ var ludiGroup = {
     workflow.emit('validate');
   },
 
+  // TODO Add user to group
+  place: function(req, res, next){
+    var workflow = req.app.utility.workflow(req, res);
+    workflow.on('validate', function() {
+
+      if (!req.body.category) {
+        workflow.outcome.errors.push('Missing category information');
+        return workflow.emit('response');
+      }
+      // Check to see if user is already in a group today
+      req.app.db.models.User.findById(req.user.id).exec(function(err, user) {
+        if (err) {
+          return next(err);
+        }
+        res.status(200).json(user);
+      });
+
+
+
+      workflow.emit('createLudiGroup');
+    });
+
+    // lookup groups in category with todays date
+
+    // Create a new one if there are none or they are all full
+
+    // find the smallest one.
+
+    // Add user to group
+    workflow.emit('validate');
+  },
+
   update: function(req, res, next){
     var workflow = req.app.utility.workflow(req, res);
 
     workflow.on('validate', function() {
-      if (!req.body.category {
+      if (!req.body.category) {
         workflow.outcome.errfor.category = 'required';
         return workflow.emit('response');
       }
