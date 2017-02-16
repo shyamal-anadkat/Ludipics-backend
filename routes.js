@@ -80,7 +80,7 @@ exports = module.exports = function(app, passport) {
   app.all('/api/auth*', apiEnsureAuthenticated);
   app.all('/api/auth*', apiEnsureAccount);
 
-  app.post('/api/auth/category', ludiGroups.place); // add user to open group
+  app.post('/api/auth/ludiCategory', ludiGroups.place); // add user to open group
 
   //-----authentication required api-----
   app.all('/api/account*', apiEnsureAuthenticated);
