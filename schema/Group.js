@@ -1,7 +1,7 @@
 'use strict';
 
 exports = module.exports = function(app, mongoose) {
-  var groupSchema = new mongoose.Schema({
+  var ludiGroupSchema = new mongoose.Schema({
     users: [{
       id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
       name: { type: String, default: '' }
@@ -16,9 +16,9 @@ exports = module.exports = function(app, mongoose) {
     endTime: { type: Date },
     search: [String]
   });
-  groupSchema.plugin(require('./plugins/pagedFind'));
-  groupSchema.index({ user: 1 });
-  groupSchema.index({ search: 1 });
-  groupSchema.set('autoIndex', (app.get('env') === 'development'));
-  app.db.model('group', groupSchema);
+  ludiGroupSchema.plugin(require('./plugins/pagedFind'));
+  ludiGroupSchema.index({ user: 1 });
+  ludiGroupSchema.index({ search: 1 });
+  ludiGroupSchema.set('autoIndex', (app.get('env') === 'development'));
+  app.db.model('LudiGroup', ludiGroupSchema);
 };

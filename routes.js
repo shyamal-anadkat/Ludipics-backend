@@ -152,6 +152,10 @@ exports = module.exports = function(app, passport) {
   app.put('/api/admin/categories/:id', adminCategory.update);
   app.delete('/api/admin/categories/:id', adminCategory.delete);
 
+  //admin > ludicategories
+  app.post('/api/admin/ludiCategories', ludiCategory.create);
+  app.delete('/api/admin/ludiCategories/:id', ludiCategory.delete);
+
   //admin > search
   app.get('/api/admin/search', admin.search);
 
