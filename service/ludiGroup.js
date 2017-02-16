@@ -2,19 +2,14 @@
 // public api
 var ludiGroup = {
   find: function(req, res, next){
-    req.query.name = req.query.name ? req.query.name : '';
     req.query.limit = req.query.limit ? parseInt(req.query.limit, null) : 20;
     req.query.page = req.query.page ? parseInt(req.query.page, null) : 1;
     req.query.sort = req.query.sort ? req.query.sort : '_id';
 
     var filters = {};
-    if (req.query.name) {
-      filters.name = new RegExp('^.*?'+ req.query.name +'.*$', 'i');
-    }
 
     req.app.db.models.LudiGroup.pagedFind({
       filters: filters,
-      keys: 'name',
       limit: req.query.limit,
       page: req.query.page,
       sort: req.query.sort
@@ -51,8 +46,10 @@ var ludiGroup = {
 
     workflow.on('createLudiGroup', function() {
       var fieldsToSet = {
-        _id: req.app.utility.slugify(req.body.name),
-        name: req.body.name
+        _id: req.app.utility.slugify(req.body.category),
+        category: {
+        	id: req.body.category
+        }
       };
 
       req.app.db.models.LudiGroup.create(fieldsToSet, function(err, ludiGroup) {
@@ -72,8 +69,8 @@ var ludiGroup = {
     var workflow = req.app.utility.workflow(req, res);
 
     workflow.on('validate', function() {
-      if (!req.body.name) {
-        workflow.outcome.errfor.name = 'required';
+      if (!req.body.category {
+        workflow.outcome.errfor.category = 'required';
         return workflow.emit('response');
       }
 
@@ -82,7 +79,7 @@ var ludiGroup = {
 
     workflow.on('patchLudiGroup', function() {
       var fieldsToSet = {
-        name: req.body.name
+        category: req.body.category
       };
       var options = { new: true };
       req.app.db.models.LudiGroup.findByIdAndUpdate(req.params.id, fieldsToSet, options, function(err, ludiGroup) {

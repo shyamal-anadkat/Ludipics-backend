@@ -7,7 +7,7 @@ exports = module.exports = function(app, mongoose) {
       name: { type: String, default: '' }
     },
     group: {
-      id: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' }
+      id: { type: mongoose.Schema.Types.ObjectId, ref: 'LudiGroup' }
     },
     story: {
       id: { type: mongoose.Schema.Types.ObjectId, ref: 'Story' }
