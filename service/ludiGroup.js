@@ -49,6 +49,7 @@ var ludiGroup = {
         _id: req.app.utility.slugify(req.body.category),
         category: {
         	id: req.body.category
+          // Start and end times?
         }
       };
 
@@ -69,31 +70,51 @@ var ludiGroup = {
   place: function(req, res, next){
     var workflow = req.app.utility.workflow(req, res);
     workflow.on('validate', function() {
-
       if (!req.body.category) {
         workflow.outcome.errors.push('Missing category information');
         return workflow.emit('response');
       }
-      // Check to see if user is already in a group today
+      // TODO Check to see if user is already in a group today
+      /*
       req.app.db.models.User.findById(req.user.id).exec(function(err, user) {
         if (err) {
           return next(err);
         }
         res.status(200).json(user);
       });
-
-
-
-      workflow.emit('createLudiGroup');
+      */
+      workflow.emit('findGroup');
     });
+    workflow.on('findGroup', function() {
+    // lookup groups in category with creation in acceptable time range
 
-    // lookup groups in category with todays date
+      //right now this just finds ones made today
+      var start = new Date();
+      start.setHours(0,0,0,0);
+
+      var end = new Date();
+      end.setHours(23,59,59,999);
+
+      req.app.db.models.LudiGroup.find({"created_on": {"$gte": new Date()},"category.id":req.body.category}, function(err, ludiGroups) {
+        if (err) {
+          return workflow.emit('exception', err);
+        }
+
+
+        workflow.outcome.record = ludiGroup;
+        return workflow.emit('response');
+      });
+
 
     // Create a new one if there are none or they are all full
 
     // find the smallest one.
+    });
 
     // Add user to group
+
+    // Add group to user
+
     workflow.emit('validate');
   },
 

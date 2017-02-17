@@ -12,7 +12,7 @@ exports = module.exports = function(app, mongoose) {
     }],
     name: { type: String, default: '' },
     timeCreated: { type: Date, default: Date.now },
-    startTime: { type: Date },
+    startTime: { type: Date, default: Date.now },
     endTime: { type: Date },
     search: [String]
   });
