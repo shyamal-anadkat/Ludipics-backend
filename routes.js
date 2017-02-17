@@ -12,6 +12,7 @@ var adminStatus = require('./service/admin/status');
 var adminCategory = require('./service/admin/category');
 var ludiCategory = require('./service/admin/ludiCategory');
 var ludiGroups = require('./service/ludiGroup');
+var daily = require('./service/admin/daily')
 
 function useAngular(req, res, next){
   res.sendFile(require('path').join(__dirname, './client/dist/index.html'));
@@ -73,7 +74,9 @@ exports = module.exports = function(app, passport) {
   app.get('/api/ludiCategories', ludiCategory.find);
   app.get('/api/ludiCategories/:id', ludiCategory.read);
   app.get('/api/ludiGroups', ludiGroups.find);
-  app.get('/api/ludiGroups/:id', ludiGroups.read)
+  app.get('/api/ludiGroups/:id', ludiGroups.read);
+  app.get('/api/daily',daily.find);
+  app.get('/api/daily/:id',daily.read);
 
   ///-----Auth Ludi calls------
 
@@ -167,6 +170,9 @@ exports = module.exports = function(app, passport) {
   app.delete('/api/admin/ludiCategories/:id', ludiCategory.delete);
   app.post('/api/admin/ludiGroups', ludiGroups.create);
   app.delete('/api/admin/ludiGroups/:id', ludiGroups.delete);
+  app.post('/api/admin/daily',daily.create);
+  app.put('/api/admin/daily/:id',daily.update);
+  app.delete('/api/admin/daily/:id',daily.delete);
 
   //admin > search
   app.get('/api/admin/search', admin.search);

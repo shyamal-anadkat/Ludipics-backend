@@ -17,4 +17,5 @@ exports = module.exports = function(app, mongoose) {
   require('./schema/Post')(app, mongoose);
   require('./schema/LudiCategory')(app, mongoose);
   require('./schema/LudiGroup')(app, mongoose);
+  require('./schema/Daily')(app, mongoose);
 };

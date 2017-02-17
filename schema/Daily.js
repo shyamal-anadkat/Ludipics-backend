@@ -6,14 +6,14 @@ exports = module.exports = function(app, mongoose) {
     categories: [
       {
         id: { type: mongoose.Schema.Types.ObjectId, ref: 'LudiCategory' },
-        name: { type: String, default: '' }
+        name: { type: String, default: '' },
         highlights: [
           {
             id: { type: mongoose.Schema.Types.ObjectId, ref: 'Post' },
           }
         ]
       }
-    ]
+    ],
     name: { type: String, default: '' }
   });
   dailySchema.plugin(require('./plugins/pagedFind'));
