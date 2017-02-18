@@ -46,11 +46,7 @@ var ludiGroup = {
 
     workflow.on('createLudiGroup', function() {
       var fieldsToSet = {
-        _id: req.app.utility.slugify(req.body.ludiCategory),
-        ludiCategory: {
-        	id: req.body.ludiCategory
-          // Start and end times?
-        }
+        ludiCategory: req.body.ludiCategory
       };
 
       req.app.db.models.LudiGroup.create(fieldsToSet, function(err, ludiGroup) {

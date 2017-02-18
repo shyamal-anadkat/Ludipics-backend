@@ -36,12 +36,8 @@ var story = {
 
     workflow.on('validate', function() {
 
-      if (!req.body.ludiGroup.id) {
+      if (!req.body.ludiGroup._id) {
         workflow.outcome.errors.push('Missing group information');
-        return workflow.emit('response');
-      }
-      if (!req.body.user.id) {
-        workflow.outcome.errors.push('Missing user information');
         return workflow.emit('response');
       }
       // check if user in group
