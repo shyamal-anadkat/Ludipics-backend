@@ -6,8 +6,8 @@ exports = module.exports = function(app, mongoose) {
       id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
       name: { type: String, default: '' }
     },
-    group: {
-      id: { type: mongoose.Schema.Types.ObjectId, ref: 'Group' }
+    ludiGroup: {
+      id: { type: mongoose.Schema.Types.ObjectId, ref: 'LudiGroup' }
     },
     name: { type: String, default: '' },
     timeCreated: { type: Date, default: Date.now },

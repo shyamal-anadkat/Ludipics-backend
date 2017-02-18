@@ -62,7 +62,7 @@ var daily = {
       var fieldsToSet = {
         date: req.body.date,
         name: req.body.name,
-        categories: req.body.categories 
+        ludiCategories: req.body.ludiCategories 
       };
 
       req.app.db.models.Daily.create(fieldsToSet, function (err, daily) {
@@ -95,7 +95,7 @@ var daily = {
       var fieldsToSet = {
         date: req.body.date,
         name: req.body.name,
-        categories: req.body.categories 
+        ludiCategories: req.body.ludiCategories 
       };
       var options = { new: true };
 

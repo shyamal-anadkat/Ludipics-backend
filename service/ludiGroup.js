@@ -36,7 +36,7 @@ var ludiGroup = {
 
     workflow.on('validate', function() {
 
-      if (!req.body.category) {
+      if (!req.body.ludiCategory) {
         workflow.outcome.errors.push('Missing category information');
         return workflow.emit('response');
       }
@@ -46,9 +46,9 @@ var ludiGroup = {
 
     workflow.on('createLudiGroup', function() {
       var fieldsToSet = {
-        _id: req.app.utility.slugify(req.body.category),
-        category: {
-        	id: req.body.category
+        _id: req.app.utility.slugify(req.body.ludiCategory),
+        ludiCategory: {
+        	id: req.body.ludiCategory
           // Start and end times?
         }
       };
@@ -70,7 +70,7 @@ var ludiGroup = {
   place: function(req, res, next){
     var workflow = req.app.utility.workflow(req, res);
     workflow.on('validate', function() {
-      if (!req.body.category) {
+      if (!req.body.ludiCategory) {
         workflow.outcome.errors.push('Missing category information');
         return workflow.emit('response');
       }
@@ -95,7 +95,7 @@ var ludiGroup = {
       var end = new Date();
       end.setHours(23,59,59,999);
 
-      req.app.db.models.LudiGroup.find({"created_on": {"$gte": new Date()},"category.id":req.body.category}, function(err, ludiGroups) {
+      req.app.db.models.LudiGroup.find({"created_on": {"$gte": new Date()},"ludiCategory.id":req.body.ludiCategory}, function(err, ludiGroups) {
         if (err) {
           return workflow.emit('exception', err);
         }
@@ -122,8 +122,8 @@ var ludiGroup = {
     var workflow = req.app.utility.workflow(req, res);
 
     workflow.on('validate', function() {
-      if (!req.body.category) {
-        workflow.outcome.errfor.category = 'required';
+      if (!req.body.ludiCategory) {
+        workflow.outcome.errfor.ludiCategory = 'required';
         return workflow.emit('response');
       }
 
@@ -132,7 +132,7 @@ var ludiGroup = {
 
     workflow.on('patchLudiGroup', function() {
       var fieldsToSet = {
-        category: req.body.category
+        ludiCategory: req.body.ludiCategory
       };
       var options = { new: true };
       req.app.db.models.LudiGroup.findByIdAndUpdate(req.params.id, fieldsToSet, options, function(err, ludiGroup) {

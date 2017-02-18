@@ -12,7 +12,8 @@ var adminStatus = require('./service/admin/status');
 var adminCategory = require('./service/admin/category');
 var ludiCategory = require('./service/admin/ludiCategory');
 var ludiGroups = require('./service/ludiGroup');
-var daily = require('./service/admin/daily')
+var daily = require('./service/admin/daily');
+var story = require('./service/story')
 
 function useAngular(req, res, next){
   res.sendFile(require('path').join(__dirname, './client/dist/index.html'));
@@ -75,8 +76,10 @@ exports = module.exports = function(app, passport) {
   app.get('/api/ludiCategories/:id', ludiCategory.read);
   app.get('/api/ludiGroups', ludiGroups.find);
   app.get('/api/ludiGroups/:id', ludiGroups.read);
-  app.get('/api/daily',daily.find);
-  app.get('/api/daily/:id',daily.read);
+  app.get('/api/daily', daily.find);
+  app.get('/api/daily/:id', daily.read);
+  app.get('/api/story', story.find);
+  app.get('/api/story/:id', story.read);
 
   ///-----Auth Ludi calls------
 
@@ -84,6 +87,9 @@ exports = module.exports = function(app, passport) {
   app.all('/api/auth*', apiEnsureAccount);
 
   app.post('/api/auth/ludiCategory', ludiGroups.place); // add user to open group
+  app.post('/api/auth/story',story.create);
+  app.put('/api/auth/story/:id',story.update);
+  app.delete('/api/auth/story/:id',story.delete);
 
   //-----authentication required api-----
   app.all('/api/account*', apiEnsureAuthenticated);

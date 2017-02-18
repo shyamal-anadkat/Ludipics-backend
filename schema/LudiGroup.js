@@ -6,7 +6,7 @@ exports = module.exports = function(app, mongoose) {
       id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
       name: { type: String, default: '' }
     }],
-    category: [{
+    ludiCategory: [{
       id: { type: mongoose.Schema.Types.ObjectId, ref: 'LudiCategory' },
       name: { type: String, default: '' }
     }],

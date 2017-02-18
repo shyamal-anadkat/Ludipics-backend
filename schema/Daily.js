@@ -3,7 +3,7 @@
 exports = module.exports = function(app, mongoose) {
   var dailySchema = new mongoose.Schema({
     date: {type: Date },
-    categories: [
+    ludiCategories: [
       {
         id: { type: mongoose.Schema.Types.ObjectId, ref: 'LudiCategory' },
         name: { type: String, default: '' },
