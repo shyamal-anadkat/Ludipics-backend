@@ -36,7 +36,7 @@ var story = {
 
     workflow.on('validate', function() {
 
-      if (!req.body.ludiGroup._id) {
+      if (!req.body.ludiGroup || !req.body.ludiGroup._id) {
         workflow.outcome.errors.push('Missing group information');
         return workflow.emit('response');
       }
@@ -52,7 +52,7 @@ var story = {
           name: req.user.name
         },
         ludiGroup: {
-          id: req.body.ludiGroup.id
+          id: req.body.ludiGroup._id
         }
 
       };

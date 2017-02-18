@@ -4,7 +4,7 @@ var post = {
 	find: function (req, res, next) {
 		// Double check this
 	    req.query.user = req.query.user ? req.query.user : '';
-	    req.query.group = req.query.group ? req.query.group : '';
+	    req.query.ludiGroup = req.query.ludiGroup ? req.query.ludiGroup : '';
 	    req.query.story = req.query.story ? req.query.story : '';
 	    req.query.limit = req.query.limit ? parseInt(req.query.limit, null) : 20;
 	    req.query.page = req.query.page ? parseInt(req.query.page, null) : 1;
@@ -14,8 +14,8 @@ var post = {
 	    if (req.query.user.id) {
 	      filters.user.id = new RegExp('^.*?' + req.query.user.id + '.*$', 'i');
 	    }
-	    if (req.query.group.id) {
-	      filters.group.id = new RegExp('^.*?' + req.query.group.id + '.*$', 'i');
+	    if (req.query.ludiGroup.id) {
+	      filters.ludiGroup.id = new RegExp('^.*?' + req.query.group.id + '.*$', 'i');
 	    }
 	    if (req.query.story.id) {
 	      filters.story.id = new RegExp('^.*?' + req.query.story.id + '.*$', 'i');
@@ -23,7 +23,7 @@ var post = {
 
 	    req.app.db.models.Post.pagedFind({
 	      filters: filters,
-	      keys: 'user.id group.id story.id',
+	      keys: 'user.id ludiGroup.id story.id',
 	      limit: req.query.limit,
 	      page: req.query.page,
 	      sort: req.query.sort
@@ -39,15 +39,15 @@ var post = {
 	create: function (req, res, next) {
 	    var workflow = req.app.utility.workflow(req, res);
 	    workflow.on('validate', function () {
-	      	if (!req.body.story || !req.body.story.id) {
+	      	if (!req.body.story || !req.body.story._id) {
 	        	workflow.outcome.errors.push('A story is required.');
 	        	return workflow.emit('response');
 	      	}
-	      	if (!req.body.group || !req.body.group.id) {
+	      	if (!req.body.ludiGroup || !req.body.ludiGroup._id) {
 	        	workflow.outcome.errors.push('A group is required.');
 	        	return workflow.emit('response');
 	      	}
-	      	if (!req.body.img || !req.body.img.data) {
+	      	if (!req.body.img || !req.body.img.imgPath) {
 	        	workflow.outcome.errors.push('Must upload an image');
 	        	return workflow.emit('response');
 	      	}
@@ -57,7 +57,7 @@ var post = {
 
 	    workflow.on('createPost', function () {
 	      var fieldsToSet = {
-	        group: req.body.group,
+	        ludiGroup: req.body.ludiGroup,
 	        story: req.body.story,
 	        user: {
 	        	_id: req.user.id,
@@ -65,7 +65,7 @@ var post = {
 	        },
 	        // TODO Figure out how this actually works and also Videos
 	        img: {
-	        	data: fs.readFileSync(req.imgPath),
+	        	data: req.app.utility.fs.readFileSync(req.body.img.imgPath),
 	        	contentType: 'image/png'
 	        }
 	      };
