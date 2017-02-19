@@ -66,7 +66,7 @@ var ludiGroup = {
   place: function(req, res, next){
     var workflow = req.app.utility.workflow(req, res);
     workflow.on('validate', function() {
-      if (!req.body.ludiCategory) {
+      if (!req.body.ludiCategory || !req.body.ludiCategory._id) {
         workflow.outcome.errors.push('Missing category information');
         return workflow.emit('response');
       }
@@ -91,20 +91,56 @@ var ludiGroup = {
       var end = new Date();
       end.setHours(23,59,59,999);
 
-      req.app.db.models.LudiGroup.find({"created_on": {"$gte": new Date()},"ludiCategory.id":req.body.ludiCategory}, function(err, ludiGroups) {
+      req.app.db.models.LudiGroup.find({"timeCreated": {"$gte": start},"ludiCategory.id":req.body.ludiCategory._id}, function(err, ludiGroups) {
+        if (err) {
+          return workflow.emit('exception', err);
+        }
+        if (ludiGroups){
+          console.log(ludiGroups.length)
+          var found = false;
+          for (var i=0;i<ludiGroups.length;i++){
+            if (ludiGroups[i].users.length < 40 && !found){
+              found = true;
+              console.log("Found one")
+              req.app.db.models.LudiGroup.findByIdAndUpdate(ludiGroups[i]._id,{$push: {"users": {id: req.user.id, name: req.user.username}}},{safe: true, upsert: true},function(err, ludiGroup) {
+                  if (err) {
+                    return workflow.emit('exception', err);
+                  }
+                  req.app.db.models.User.findByIdAndUpdate(req.user._id,{currentGroup:{id:ludiGroup._id}},{safe: true, upsert: true}, function(err,user){
+                    if (err) {
+                      return workflow.emit('exception', err);
+                    }
+                    workflow.outcome.record = ludiGroup;
+                    return workflow.emit('response');
+                  })
+              });
+            }
+          }
+          if (!found){
+            workflow.emit('newGroup');
+          }
+        } else {
+          workflow.emit('newGroup')
+        }
+      });
+    });
+
+
+    workflow.on('newGroup',function(){
+      console.log("New Group called")
+      var fieldsToSet = {
+        ludiCategory: req.body.ludiCategory,
+        users: [{_id: req.user.id, name: req.user.username}]
+      };
+
+      req.app.db.models.LudiGroup.create(fieldsToSet, function(err, ludiGroup) {
         if (err) {
           return workflow.emit('exception', err);
         }
 
-
         workflow.outcome.record = ludiGroup;
         return workflow.emit('response');
       });
-
-
-    // Create a new one if there are none or they are all full
-
-    // find the smallest one.
     });
 
     // Add user to group
