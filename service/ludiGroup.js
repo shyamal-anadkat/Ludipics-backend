@@ -36,7 +36,7 @@ var ludiGroup = {
 
     workflow.on('validate', function() {
 
-      if (!req.body.ludiCategory || !req.body.ludiCategory._id) {
+      if (!req.body.ludiCategory || !req.body.ludiCategory.id) {
         workflow.outcome.errors.push('Missing category information');
         return workflow.emit('response');
       }
@@ -66,7 +66,7 @@ var ludiGroup = {
   place: function(req, res, next){
     var workflow = req.app.utility.workflow(req, res);
     workflow.on('validate', function() {
-      if (!req.body.ludiCategory || !req.body.ludiCategory._id) {
+      if (!req.body.ludiCategory || !req.body.ludiCategory.id) {
         workflow.outcome.errors.push('Missing category information');
         return workflow.emit('response');
       }
@@ -89,7 +89,7 @@ var ludiGroup = {
       var end = new Date();
       end.setHours(23,59,59,999);
 
-      req.app.db.models.LudiGroup.find({"timeCreated": {"$gte": start},"ludiCategory._id":req.body.ludiCategory._id}, function(err, ludiGroups) {
+      req.app.db.models.LudiGroup.find({"timeCreated": {"$gte": start},"ludiCategory.id":req.body.ludiCategory.id}, function(err, ludiGroups) {
         if (err) {
           return workflow.emit('exception', err);
         }
@@ -98,11 +98,11 @@ var ludiGroup = {
           for (var i=0;i<ludiGroups.length;i++){
             if (ludiGroups[i].users.length < 40 && !found){
               found = true;
-              req.app.db.models.LudiGroup.findByIdAndUpdate(ludiGroups[i]._id,{$push: {"users": {_id: req.user.id, name: req.user.username}}},{safe: true, upsert: true},function(err, ludiGroup) {
+              req.app.db.models.LudiGroup.findByIdAndUpdate(ludiGroups[i].id,{$push: {"users": {id: req.user.id, name: req.user.username}}},{safe: true, upsert: true},function(err, ludiGroup) {
                   if (err) {
                     return workflow.emit('exception', err);
                   }
-                  req.app.db.models.User.findByIdAndUpdate(req.user._id,{currentGroup:{id:ludiGroup._id}},{safe: true, upsert: true}, function(err,user){
+                  req.app.db.models.User.findByIdAndUpdate(req.user.id,{currentGroup:{id:ludiGroup.id}},{safe: true, upsert: true}, function(err,user){
                     if (err) {
                       return workflow.emit('exception', err);
                     }
@@ -124,8 +124,8 @@ var ludiGroup = {
 
     workflow.on('newGroup',function(){
       var fieldsToSet = {
-        ludiCategory: {_id: req.body.ludiCategory._id, name: req.body.ludiCategory.name},
-        users: [{_id: req.user.id, name: req.user.username}]
+        ludiCategory: {id: req.body.ludiCategory.id, name: req.body.ludiCategory.name},
+        users: [{id: req.user.id, name: req.user.username}]
       };
 
       req.app.db.models.LudiGroup.create(fieldsToSet, function(err, ludiGroup) {
