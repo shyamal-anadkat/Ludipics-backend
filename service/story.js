@@ -6,16 +6,20 @@ var story = {
     req.query.page = req.query.page ? parseInt(req.query.page, null) : 1;
     req.query.sort = req.query.sort ? req.query.sort : '_id';
     req.query.ludiGroup = req.query.ludiGroup ? req.query.ludiGroup: '';
+    req.query.user = req.query.user ? req.query.user: '';
 
     var filters = {};
 
     if (req.query.ludiGroup) {
       filters['ludiGroup.id'] =  req.query.ludiGroup;
     }
+    if (req.query.user) {
+      filters['user.id'] = req.query.user;
+    }
 
     req.app.db.models.Story.pagedFind({
       filters: filters,
-      keys: 'ludiGroup',
+      keys: 'ludiGroup user',
       limit: req.query.limit,
       page: req.query.page,
       sort: req.query.sort
