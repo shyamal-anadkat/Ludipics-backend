@@ -3,6 +3,7 @@
 var post = {
 	find: function (req, res, next) {
 		// Double check this
+		console.log(req.query)
 	    req.query.user = req.query.user ? req.query.user : '';
 	    req.query.ludiGroup = req.query.ludiGroup ? req.query.ludiGroup : '';
 	    req.query.story = req.query.story ? req.query.story : '';
@@ -11,19 +12,19 @@ var post = {
 	    req.query.sort = req.query.sort ? req.query.sort : '_id';
 
 	    var filters = {};
-	    if (req.query.user.id) {
-	      filters.user.id = new RegExp('^.*?' + req.query.user.id + '.*$', 'i');
-	    }
-	    if (req.query.ludiGroup.id) {
-	      filters.ludiGroup.id = new RegExp('^.*?' + req.query.group.id + '.*$', 'i');
+	    if (req.query.user) {
+	      filters.user = new RegExp('^.*?' + req.query.user + '.*$', 'i');
+	    } 
+	    if (req.query.ludiGroup) {
+	      filters.ludiGroup = new RegExp('^.*?' + req.query.group + '.*$', 'i');
 	    }
 	    if (req.query.story.id) {
-	      filters.story.id = new RegExp('^.*?' + req.query.story.id + '.*$', 'i');
+	      filters.story = new RegExp('^.*?' + req.query.story + '.*$', 'i');
 	    }
 
 	    req.app.db.models.Post.pagedFind({
 	      filters: filters,
-	      keys: 'user.id ludiGroup.id story.id',
+	      keys: 'user._id ludiGroup._id story._id',
 	      limit: req.query.limit,
 	      page: req.query.page,
 	      sort: req.query.sort
@@ -41,7 +42,6 @@ var post = {
 	    var workflow = req.app.utility.workflow(req, res);
 	    workflow.on('validate', function () {
 	    	console.log(req.body)
-	    	console.log(req.file)
 	      	if (!req.body.story) {
 	        	workflow.outcome.errors.push('A story is required.');
 	        	return workflow.emit('response');
@@ -61,14 +61,14 @@ var post = {
 	    workflow.on('createPost', function () {
 	      var fieldsToSet = {
 	        ludiGroup: {
-	        	_id: req.body.ludiGroup
+	        	id: req.body.ludiGroup
 	        },
 	        story: {
-	        	_id: req.body.story
+	        	id: req.body.story
 	        },
 	        user: {
-	        	_id: req.user.id,
-	        	name: req.user.name
+	        	id: req.user.id,
+	        	name: req.user.username
 	        },
 	        img: {
 	        	location: "img/" + req.file.filename,
