@@ -47,13 +47,23 @@ var post = {
 	        	workflow.outcome.errors.push('A group is required.');
 	        	return workflow.emit('response');
 	      	}
-	      	if (!req.body.img || !req.body.img.imgPath) {
+	      	if (!req.file) {
 	        	workflow.outcome.errors.push('Must upload an image');
 	        	return workflow.emit('response');
 	      	}
 
-	      workflow.emit('createPost');
+	      workflow.emit('uploadImage');
 	    });
+	    workflow.on('uploadImage', function(){
+			var postImage = req.file.postImage;
+	        postImage.mv('./client/dist/img/', function(err) {
+    			if (err){
+    				workflow.outcome.errors.push('Error with upload');
+	        		return workflow.emit('response');
+    			}
+    			workflow.emit('createPost')
+ 			});
+ 		});
 
 	    workflow.on('createPost', function () {
 	      var fieldsToSet = {
@@ -63,9 +73,8 @@ var post = {
 	        	_id: req.user.id,
 	        	name: req.user.name
 	        },
-	        // TODO Figure out how this actually works and also Videos
 	        img: {
-	        	data: req.app.utility.fs.readFileSync(req.body.img.imgPath),
+	        	location: "img/" + req.file.postImage.name,
 	        	contentType: 'image/png'
 	        }
 	      };

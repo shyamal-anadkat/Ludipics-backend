@@ -76,20 +76,22 @@ app.locals.cacheBreaker = 'br34k-01';
 //setup passport
 require('./passport')(app, passport);
 
+//setup utilities
+app.utility = {};
+app.utility.sendmail = require('./util/sendmail');
+app.utility.slugify = require('./util/slugify');
+app.utility.workflow = require('./util/workflow');
+app.utility.multer  = require('multer');
+app.utility.upload = app.utility.multer({ dest: './client/dist/img/' });
+
 //setup routes
 require('./routes')(app, passport);
 
 //custom (friendly) error handler
 app.use(require('./service/http').http500);
 
-//setup utilities
-app.utility = {};
-app.utility.sendmail = require('./util/sendmail');
-app.utility.slugify = require('./util/slugify');
-app.utility.workflow = require('./util/workflow');
-app.utility.fs = require('fs');
 
 //listen up
 app.server.listen(app.config.port, function(){
-  //and... we're live
+  console.log("server running")
 });

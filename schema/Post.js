@@ -12,7 +12,7 @@ exports = module.exports = function(app, mongoose) {
     story: {
       id: { type: mongoose.Schema.Types.ObjectId, ref: 'Story' }
     },
-    img: { data: Buffer, contentType: String },
+    img: { location:String, contentType: String },
     votes: [{
         time: { type: Date, default: Date.now },
         id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }

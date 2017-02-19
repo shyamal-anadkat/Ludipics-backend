@@ -14,7 +14,7 @@ var ludiCategory = require('./service/admin/ludiCategory');
 var ludiGroups = require('./service/ludiGroup');
 var daily = require('./service/admin/daily');
 var story = require('./service/story');
-var post = require('./service/post')
+var post = require('./service/post');
 
 function useAngular(req, res, next){
   res.sendFile(require('path').join(__dirname, './client/dist/index.html'));
@@ -93,7 +93,7 @@ exports = module.exports = function(app, passport) {
   app.post('/api/auth/story',story.create);
   app.put('/api/auth/story/:id',story.update);
   app.delete('/api/auth/story/:id',story.delete);
-  app.post('/api/auth/post',post.create);
+  app.post('/api/auth/post', app.utility.upload.single('postImage'), post.create);
   app.delete('/api/auth/post',post.delete);
 
   //-----authentication required api-----
