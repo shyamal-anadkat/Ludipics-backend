@@ -1,11 +1,10 @@
-# [Angular-Drywall](http://arthurkao.github.io/angular-drywall)
+# LudiPics
 
-[![Build Status](https://travis-ci.org/arthurkao/angular-drywall.svg?branch=master)](https://travis-ci.org/arthurkao/angular-drywall)
+I'm just going to leave most of the docs for [Angular-Drywall](http://arthurkao.github.io/angular-drywall), because they're still pretty accurate.
 
-A website and user system, implemented with [MongoDB](https://www.mongodb.org/), [Express](http://expressjs.com/), [AngularJS](https://angularjs.org/) and [Node.js](https://nodejs.org/), a.k.a MEAN stack.
-Inspired by and forked from [Drywall](https://github.com/jedireza/drywall).
+A website and user system, implemented with [MongoDB](https://www.mongodb.org/), [Express](http://expressjs.com/), [AngularJS](https://angularjs.org/) and [Node.js](https://nodejs.org/).
 
-## Features
+## Drywall Built-in Features
 
  - Versatility because you can
     - Hack your next awesome MEAN stack web app on top of [Angular-Drywall](http://arthurkao.github.io/angular-drywall), or
@@ -55,7 +54,7 @@ page](https://github.com/jedireza/drywall/wiki/bcrypt-Installation-Trouble).
 
 ## Installation
 ```bash
-$ git clone https://github.com/arthurkao/angular-drywall.git && cd ./angular-drywall
+$ git clone https://github.com/ghensley/Ludipics-backend.git && cd ./Ludipics-backend
 $ npm install
 $ cd client && bower install && cd ..
 ```
@@ -95,7 +94,7 @@ $ grunt
 # [nodemon] starting `node app.js`
 ```
 
-Now [Angular-Drywall](http://arthurkao.github.io/angular-drywall) should be up and running at `http://localhost:3000`.
+Server should be up and running at `http://localhost:3000`.
 
 Login. Customize. Enjoy.
 
@@ -107,12 +106,6 @@ Login. Customize. Enjoy.
  - RESTful API service that easily serves non-browser (iOS, Android, among others) clients.
  - [Single page web application](http://en.wikipedia.org/wiki/Single-page_application).
 
-
-## Questions and contributing
-
-Any issues or questions (no matter how basic), open an issue. Please take the
-initiative to include basic debugging information like operating system
-and relevant version details such as:
 
 ```bash
 $ npm version
@@ -129,10 +122,6 @@ $ npm version
 #  npm: '2.1.7' }
 ```
 
-Contributions are welcome.
-
-
 ## License
 
-MIT# Ludipics-backend
-# Ludipics-backend
+MIT
