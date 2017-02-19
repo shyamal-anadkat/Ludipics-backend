@@ -77,12 +77,13 @@ exports = module.exports = function(app, passport) {
   app.get('/api/ludiCategories/:id', ludiCategory.read);
   app.get('/api/ludiGroups', ludiGroups.find);
   app.get('/api/ludiGroups/:id', ludiGroups.read);
-  app.get('/api/daily', daily.find);
-  app.get('/api/daily/:id', daily.read);
-  app.get('/api/story', story.find);
-  app.get('/api/story/:id', story.read);
-  app.get('/api/post',post.find);
-  app.get('/api/post/:id',post.read);
+  app.get('/api/dailies', daily.find);
+  app.get('/api/dailies/:id', daily.read);
+  app.get('/api/stories', story.find);
+  app.get('/api/stories/:id', story.read);
+  app.get('/api/posts',post.find);
+  app.get('/api/posts/:id',post.read);
+  app.get('/api/users/:id',adminUser.publicRead);
 
   ///-----Auth Ludi calls------
 

@@ -3,7 +3,7 @@
 exports = module.exports = function(app, mongoose) {
   var ludiGroupSchema = new mongoose.Schema({
     users: [{
-      id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+      _id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
       name: { type: String, default: '' }
     }],
     ludiCategory: {

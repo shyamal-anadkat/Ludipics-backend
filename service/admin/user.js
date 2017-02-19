@@ -102,7 +102,14 @@ var user = {
       res.status(200).json(user);
     });
   },
-
+  publicRead: function(req,res,next){
+    req.app.db.models.User.findById(req.params.id, {"password":0,"search":0} ,function(err, user) {
+      if (err) {
+        return next(err);
+      }
+      res.status(200).json(user);
+    });
+  },
   update: function(req, res, next){
     var workflow = req.app.utility.workflow(req, res);
 
