@@ -3,28 +3,27 @@
 var post = {
 	find: function (req, res, next) {
 		// Double check this
-		console.log(req.query)
+		
 	    req.query.user = req.query.user ? req.query.user : '';
 	    req.query.ludiGroup = req.query.ludiGroup ? req.query.ludiGroup : '';
 	    req.query.story = req.query.story ? req.query.story : '';
 	    req.query.limit = req.query.limit ? parseInt(req.query.limit, null) : 20;
 	    req.query.page = req.query.page ? parseInt(req.query.page, null) : 1;
 	    req.query.sort = req.query.sort ? req.query.sort : '_id';
-
 	    var filters = {};
 	    if (req.query.user) {
-	      filters.user = new RegExp('^.*?' + req.query.user + '.*$', 'i');
+	      filters['user.id'] =  req.query.user;
 	    } 
 	    if (req.query.ludiGroup) {
-	      filters.ludiGroup = new RegExp('^.*?' + req.query.group + '.*$', 'i');
+	      filters['ludiGroup.id'] = req.query.group;
 	    }
 	    if (req.query.story.id) {
-	      filters.story = new RegExp('^.*?' + req.query.story + '.*$', 'i');
+	      filters['story.id'] = req.query.story;
 	    }
 
 	    req.app.db.models.Post.pagedFind({
 	      filters: filters,
-	      keys: 'user._id ludiGroup._id story._id',
+	      keys: 'user ludiGroup story',
 	      limit: req.query.limit,
 	      page: req.query.page,
 	      sort: req.query.sort
