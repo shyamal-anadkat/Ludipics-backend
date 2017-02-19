@@ -9,8 +9,8 @@ var ludiGroup = {
     var filters = {};
 
     if (req.query.ludiCategory) {
-        filters['ludiCategory.id'] =  req.query.ludiCategory;
-      }
+      filters['ludiCategory.id'] =  req.query.ludiCategory;
+    }
 
     req.app.db.models.LudiGroup.pagedFind({
       filters: filters,
@@ -111,7 +111,7 @@ var ludiGroup = {
                     if (err) {
                       return workflow.emit('exception', err);
                     }
-                    workflow.outcome.record = user;
+                    workflow.outcome.record = ludiGroup;
                     return workflow.emit('response');
                   });
               });
@@ -142,16 +142,11 @@ var ludiGroup = {
           if (err) {
             return workflow.emit('exception', err);
           }
-          workflow.outcome.record = user;
+          workflow.outcome.record = ludiGroup;
           return workflow.emit('response');
         });
       });
     });
-
-    // Add user to group
-
-    // Add group to user
-
     workflow.emit('validate');
   },
 
