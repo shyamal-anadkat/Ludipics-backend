@@ -52,7 +52,7 @@ angular.module('app').run(['$location', '$rootScope', 'security', function($loca
 
   // add a listener to $routeChangeSuccess
   $rootScope.$on('$routeChangeSuccess', function (event, current, previous) {
-    $rootScope.title = current.$$route && current.$$route.title? current.$$route.title: 'Drywall is Running';
+    $rootScope.title = current.$$route && current.$$route.title? current.$$route.title: 'LudiPics';
   });
 }]);
 
