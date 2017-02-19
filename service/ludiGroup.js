@@ -94,12 +94,10 @@ var ludiGroup = {
           return workflow.emit('exception', err);
         }
         if (ludiGroups){
-          console.log(ludiGroups.length)
           var found = false;
           for (var i=0;i<ludiGroups.length;i++){
             if (ludiGroups[i].users.length < 40 && !found){
               found = true;
-              console.log("Found one")
               req.app.db.models.LudiGroup.findByIdAndUpdate(ludiGroups[i]._id,{$push: {"users": {_id: req.user.id, name: req.user.username}}},{safe: true, upsert: true},function(err, ludiGroup) {
                   if (err) {
                     return workflow.emit('exception', err);
@@ -125,7 +123,6 @@ var ludiGroup = {
 
 
     workflow.on('newGroup',function(){
-      console.log("New Group called")
       var fieldsToSet = {
         ludiCategory: {_id: req.body.ludiCategory._id, name: req.body.ludiCategory.name},
         users: [{_id: req.user.id, name: req.user.username}]
