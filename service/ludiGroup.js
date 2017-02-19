@@ -103,7 +103,7 @@ var ludiGroup = {
           for (var i=0;i<ludiGroups.length;i++){
             if (ludiGroups[i].users.length < 40 && !found){
               found = true;
-              req.app.db.models.LudiGroup.findByIdAndUpdate(ludiGroups[i].id,{$push: {"users": {_id: req.user.id, name: req.user.username}}},{safe: true, upsert: true},function(err, ludiGroup) {
+              req.app.db.models.LudiGroup.findByIdAndUpdate(ludiGroups[i].id,{$push: {"users": {_id: req.user.id, name: req.user.username}}},{safe: true, upsert: true,'new':true},function(err, ludiGroup) {
                   if (err) {
                     return workflow.emit('exception', err);
                   }

@@ -13,10 +13,7 @@ exports = module.exports = function(app, mongoose) {
       id: { type: mongoose.Schema.Types.ObjectId, ref: 'Story' }
     },
     img: { location:String, contentType: String },
-    votes: [{
-        time: { type: Date, default: Date.now },
-        id: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
-    }],
+    votes: [ {type: mongoose.Schema.Types.ObjectId, ref: 'User'} ],
     timeCreated: { type: Date, default: Date.now },
     search: [String]
   });

@@ -96,6 +96,7 @@ exports = module.exports = function(app, passport) {
   app.delete('/api/auth/story/:id',story.delete);
   app.post('/api/auth/post', app.utility.upload.single('postImage'), post.create);
   app.delete('/api/auth/post',post.delete);
+  app.post('/api/auth/upvote',post.upvote);
 
   //-----authentication required api-----
   app.all('/api/account*', apiEnsureAuthenticated);

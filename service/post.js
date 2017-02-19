@@ -89,11 +89,20 @@ var post = {
   	},
   	read: function (req, res, next) {
 	    req.app.db.models.Post.findById(req.params.id).exec(function (err, post) {
-	      if (err) {
-	        return next(err);
-	      }
-	      res.status(200).json(post);
+			if (err) {
+				return next(err);
+			}
+			res.status(200).json(post);
 	    });
+	},
+	upvote: function(req,res,next){
+		// No un-upvoting for now
+		req.app.db.models.Post.findByIdAndUpdate(req.body.id,{$addToSet: {"votes": req.user.id}},{safe: true, upsert: true,'new':true},function(err, post) {
+			if (err) {
+	        	return next(err);
+	      	}
+	      res.status(200).json(post);
+		});
 	},
   	delete: function (req, res, next) {
 	    var workflow = req.app.utility.workflow(req, res);
