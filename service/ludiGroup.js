@@ -8,8 +8,13 @@ var ludiGroup = {
 
     var filters = {};
 
+    if (req.query.ludiCategory) {
+        filters['ludiCategory.id'] =  req.query.ludiCategory;
+      }
+
     req.app.db.models.LudiGroup.pagedFind({
       filters: filters,
+      keys: 'ludiCategory',
       limit: req.query.limit,
       page: req.query.page,
       sort: req.query.sort
@@ -98,7 +103,7 @@ var ludiGroup = {
           for (var i=0;i<ludiGroups.length;i++){
             if (ludiGroups[i].users.length < 40 && !found){
               found = true;
-              req.app.db.models.LudiGroup.findByIdAndUpdate(ludiGroups[i].id,{$push: {"users": {id: req.user.id, name: req.user.username}}},{safe: true, upsert: true},function(err, ludiGroup) {
+              req.app.db.models.LudiGroup.findByIdAndUpdate(ludiGroups[i].id,{$push: {"users": {_id: req.user.id, name: req.user.username}}},{safe: true, upsert: true},function(err, ludiGroup) {
                   if (err) {
                     return workflow.emit('exception', err);
                   }
@@ -108,7 +113,7 @@ var ludiGroup = {
                     }
                     workflow.outcome.record = user;
                     return workflow.emit('response');
-                  })
+                  });
               });
             }
           }
@@ -125,7 +130,7 @@ var ludiGroup = {
     workflow.on('newGroup',function(){
       var fieldsToSet = {
         ludiCategory: {id: req.body.ludiCategory.id, name: req.body.ludiCategory.name},
-        users: [{id: req.user.id, name: req.user.username}]
+        users: [{_id: req.user.id, name: req.user.username}]
       };
 
       req.app.db.models.LudiGroup.create(fieldsToSet, function(err, ludiGroup) {
@@ -133,8 +138,13 @@ var ludiGroup = {
           return workflow.emit('exception', err);
         }
 
-        workflow.outcome.record = ludiGroup;
-        return workflow.emit('response');
+        req.app.db.models.User.findByIdAndUpdate(req.user.id,{currentGroup:{id:ludiGroup.id}},{safe: true, upsert: true}, function(err,user){
+          if (err) {
+            return workflow.emit('exception', err);
+          }
+          workflow.outcome.record = user;
+          return workflow.emit('response');
+        });
       });
     });
 
