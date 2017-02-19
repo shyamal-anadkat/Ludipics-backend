@@ -36,14 +36,17 @@ var post = {
 	      res.status(200).json(results);
 	    });
   	},
+  	// Upload with this method doesn't use JSON.
 	create: function (req, res, next) {
 	    var workflow = req.app.utility.workflow(req, res);
 	    workflow.on('validate', function () {
-	      	if (!req.body.story || !req.body.story._id) {
+	    	console.log(req.body)
+	    	console.log(req.file)
+	      	if (!req.body.story) {
 	        	workflow.outcome.errors.push('A story is required.');
 	        	return workflow.emit('response');
 	      	}
-	      	if (!req.body.ludiGroup || !req.body.ludiGroup._id) {
+	      	if (!req.body.ludiGroup) {
 	        	workflow.outcome.errors.push('A group is required.');
 	        	return workflow.emit('response');
 	      	}
@@ -52,29 +55,23 @@ var post = {
 	        	return workflow.emit('response');
 	      	}
 
-	      workflow.emit('uploadImage');
+	      workflow.emit('createPost');
 	    });
-	    workflow.on('uploadImage', function(){
-			var postImage = req.file.postImage;
-	        postImage.mv('./client/dist/img/', function(err) {
-    			if (err){
-    				workflow.outcome.errors.push('Error with upload');
-	        		return workflow.emit('response');
-    			}
-    			workflow.emit('createPost')
- 			});
- 		});
 
 	    workflow.on('createPost', function () {
 	      var fieldsToSet = {
-	        ludiGroup: req.body.ludiGroup,
-	        story: req.body.story,
+	        ludiGroup: {
+	        	_id: req.body.ludiGroup
+	        },
+	        story: {
+	        	_id: req.body.story
+	        },
 	        user: {
 	        	_id: req.user.id,
 	        	name: req.user.name
 	        },
 	        img: {
-	        	location: "img/" + req.file.postImage.name,
+	        	location: "img/" + req.file.filename,
 	        	contentType: 'image/png'
 	        }
 	      };
