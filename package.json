@@ -1,19 +1,18 @@
 {
-  "name": "angular-drywall",
-  "description": "A MEAN stack User Management web app",
-  "version": "0.1.10",
+  "name": "LudiPics",
+  "description": "A New Adventure Everyday",
+  "version": "0.1.0",
   "keywords": [
-    "angular",
-    "drywall"
+    "LudiPics"
   ],
   "license": "MIT",
   "author": {
-    "name": "Arthur C. Kao",
-    "email": "arthurckao@gmail.com"
+    "name": "Grey Hensley",
+    "email": "grensley@gmail.com"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/arthurkao/angular-drywall"
+    "url": "https://github.com/ghensley/Ludipics-backend"
   },
   "scripts": {
     "start": "node app.js",
