@@ -30,12 +30,6 @@ A website and user system, implemented with [MongoDB](https://www.mongodb.org/),
 |                | Moment.js     |             |
 
 
-## Live demo
-
-[http://angular-drywall.arthurkao.io](http://angular-drywall.arthurkao.io)
-Hosted on AWS
-
-
 ## Requirements
 
 Have these packages installed and running on your system.
