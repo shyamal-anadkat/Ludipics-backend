@@ -36,7 +36,7 @@ var ludiGroup = {
 
     workflow.on('validate', function() {
 
-      if (!req.body.ludiCategory) {
+      if (!req.body.ludiCategory || !req.body.ludiCategory._id) {
         workflow.outcome.errors.push('Missing category information');
         return workflow.emit('response');
       }
@@ -82,8 +82,6 @@ var ludiGroup = {
       workflow.emit('findGroup');
     });
     workflow.on('findGroup', function() {
-    // lookup groups in category with creation in acceptable time range
-
       //right now this just finds ones made today
       var start = new Date();
       start.setHours(0,0,0,0);
@@ -91,7 +89,7 @@ var ludiGroup = {
       var end = new Date();
       end.setHours(23,59,59,999);
 
-      req.app.db.models.LudiGroup.find({"timeCreated": {"$gte": start},"ludiCategory.id":req.body.ludiCategory._id}, function(err, ludiGroups) {
+      req.app.db.models.LudiGroup.find({"timeCreated": {"$gte": start},"ludiCategory._id":req.body.ludiCategory._id}, function(err, ludiGroups) {
         if (err) {
           return workflow.emit('exception', err);
         }
@@ -102,7 +100,7 @@ var ludiGroup = {
             if (ludiGroups[i].users.length < 40 && !found){
               found = true;
               console.log("Found one")
-              req.app.db.models.LudiGroup.findByIdAndUpdate(ludiGroups[i]._id,{$push: {"users": {id: req.user.id, name: req.user.username}}},{safe: true, upsert: true},function(err, ludiGroup) {
+              req.app.db.models.LudiGroup.findByIdAndUpdate(ludiGroups[i]._id,{$push: {"users": {_id: req.user.id, name: req.user.username}}},{safe: true, upsert: true},function(err, ludiGroup) {
                   if (err) {
                     return workflow.emit('exception', err);
                   }
@@ -110,7 +108,7 @@ var ludiGroup = {
                     if (err) {
                       return workflow.emit('exception', err);
                     }
-                    workflow.outcome.record = ludiGroup;
+                    workflow.outcome.record = user;
                     return workflow.emit('response');
                   })
               });
@@ -129,7 +127,7 @@ var ludiGroup = {
     workflow.on('newGroup',function(){
       console.log("New Group called")
       var fieldsToSet = {
-        ludiCategory: req.body.ludiCategory,
+        ludiCategory: {_id: req.body.ludiCategory._id, name: req.body.ludiCategory.name},
         users: [{_id: req.user.id, name: req.user.username}]
       };
 
