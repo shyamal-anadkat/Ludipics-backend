@@ -13,6 +13,8 @@ exports = module.exports = function(app, mongoose) {
   require('./schema/AdminGroup')(app, mongoose);
   require('./schema/Account')(app, mongoose);
   require('./schema/LoginAttempt')(app, mongoose);
+
+  //LudiPics docs
   require('./schema/Story')(app, mongoose);
   require('./schema/Post')(app, mongoose);
   require('./schema/LudiCategory')(app, mongoose);

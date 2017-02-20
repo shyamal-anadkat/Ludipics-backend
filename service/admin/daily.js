@@ -7,6 +7,10 @@ var daily = {
     req.query.page = req.query.page ? parseInt(req.query.page, null) : 1;
     req.query.sort = req.query.sort ? req.query.sort : '_id';
 
+    if (req.query.ludiCategory) {
+      filters['ludiCategory.id'] =  req.query.ludiCategory;
+    }
+
     var filters = {};
 
     //TODO figure out how json date regexes work
@@ -16,7 +20,7 @@ var daily = {
 
     req.app.db.models.Daily.pagedFind({
       filters: filters,
-      keys: 'date',
+      keys: 'date ludiCategory.id',
       limit: req.query.limit,
       page: req.query.page,
       sort: req.query.sort

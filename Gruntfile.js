@@ -225,7 +225,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-newer');
   grunt.loadNpmTasks('grunt-usemin');
   grunt.loadNpmTasks('grunt-html2js');
-  grunt.loadNpmTasks('grunt-karma');
+  //grunt.loadNpmTasks('grunt-karma');
 
 
   grunt.registerTask('angular', ['copy', 'html2js', 'concat:angular', 'sass:dev']);

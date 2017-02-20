@@ -27,7 +27,7 @@ app.server = http.createServer(app);
 app.db = mongoose.createConnection(config.mongodb.uri);
 app.db.on('error', console.error.bind(console, 'mongoose connection error: '));
 app.db.once('open', function () {
-  //and... we have a data store
+  console.log("Database connected");
 });
 
 //config data models

@@ -90,9 +90,6 @@ $ grunt
 
 Server should be up and running at `http://localhost:3000`.
 
-Login. Customize. Enjoy.
-
-
 ## Philosophy
 
  - MEAN stack web app starter with user management up and running in 5 minutes.
