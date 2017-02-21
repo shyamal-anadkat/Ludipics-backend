@@ -91,11 +91,11 @@ exports = module.exports = function(app, passport) {
   app.all('/api/auth*', apiEnsureAccount);
 
   app.post('/api/auth/ludiCategories', ludiGroups.place); // add user to open group
-  app.post('/api/auth/story',story.create);
-  app.put('/api/auth/story/:id',story.update);
-  app.delete('/api/auth/story/:id',story.delete);
-  app.post('/api/auth/post', app.utility.upload.single('postImage'), post.create);
-  app.delete('/api/auth/post',post.delete);
+  app.post('/api/auth/stories',story.create);
+  app.put('/api/auth/stories/:id',story.update);
+  app.delete('/api/auth/stories/:id',story.delete);
+  app.post('/api/auth/posts', app.utility.upload.single('postImage'), post.create);
+  app.delete('/api/auth/posts',post.delete);
   app.post('/api/auth/upvote',post.upvote);
 
   //-----authentication required api-----
@@ -183,9 +183,9 @@ exports = module.exports = function(app, passport) {
   app.delete('/api/admin/ludiCategories/:id', ludiCategory.delete);
   app.post('/api/admin/ludiGroups', ludiGroups.create);
   app.delete('/api/admin/ludiGroups/:id', ludiGroups.delete);
-  app.post('/api/admin/daily',daily.create);
-  app.put('/api/admin/daily/:id',daily.update);
-  app.delete('/api/admin/daily/:id',daily.delete);
+  app.post('/api/admin/dailies',daily.create);
+  app.put('/api/admin/dailies/:id',daily.update);
+  app.delete('/api/admin/dailies/:id',daily.delete);
 
   //admin > search
   app.get('/api/admin/search', admin.search);

@@ -51,8 +51,18 @@ var story = {
         return workflow.emit('response');
       }
       // check if user in group
-
-      workflow.emit('createStory');
+      req.app.db.models.findById(req.user.id, function(err, user){
+        if (err){
+          return workflow.emit('exception', err);
+        }
+        if (user.currentGroup.id != req.body.ludiGroup._id) {
+          workflow.outcome.errors.push("User not in group");
+          return workflow.emit('response');
+        }
+        else {
+          workflow.emit('createStory');
+        }
+      });
     });
 
     workflow.on('createStory', function() {
