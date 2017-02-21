@@ -60,8 +60,6 @@ var daily = {
       workflow.emit('createDaily');
     });
 
-    // TODO duplicate check necessary? 
-
     workflow.on('createDaily', function () {
       var fieldsToSet = {
         date: req.body.date,
