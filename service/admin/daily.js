@@ -2,20 +2,23 @@
 // public api
 var daily = {
   find: function (req, res, next) {
-    req.query.date = req.query.date? req.query.date : '';
+    //req.query.date = req.query.date? req.query.date : '';
     req.query.limit = req.query.limit ? parseInt(req.query.limit, null) : 20;
     req.query.page = req.query.page ? parseInt(req.query.page, null) : 1;
     req.query.sort = req.query.sort ? req.query.sort : '_id';
 
+    var filters = {};
     if (req.query.ludiCategory) {
       filters['ludiCategory.id'] =  req.query.ludiCategory;
     }
-
-    var filters = {};
-
-    //TODO figure out how json date regexes work
     if (req.query.date) {
-      filters.name = new RegExp('^.*?' + req.query.date + '.*$', 'i');
+      var dt = new Date(req.query.date);
+      dt.setHours(24,0,0,0);
+      dt.toISOString();
+      filters['date'] = dt
+      console.log(filters['date'])
+
+
     }
 
     req.app.db.models.Daily.pagedFind({
@@ -62,7 +65,7 @@ var daily = {
 
     workflow.on('createDaily', function () {
       var fieldsToSet = {
-        date: req.body.date,
+        date: new Date(req.body.date),
         name: req.body.name,
         ludiCategories: req.body.ludiCategories 
       };
@@ -95,7 +98,7 @@ var daily = {
 
     workflow.on('patchDaily', function () {
       var fieldsToSet = {
-        date: req.body.date,
+        date: new Date(req.body.date),
         name: req.body.name,
         ludiCategories: req.body.ludiCategories 
       };
