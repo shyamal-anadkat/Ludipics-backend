@@ -15,10 +15,7 @@ var daily = {
       var dt = new Date(req.query.date);
       dt.setHours(24,0,0,0);
       dt.toISOString();
-      filters['date'] = dt
-      console.log(filters['date'])
-
-
+      filters['date'] = dt;
     }
 
     req.app.db.models.Daily.pagedFind({

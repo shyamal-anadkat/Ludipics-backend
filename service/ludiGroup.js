@@ -76,15 +76,20 @@ var ludiGroup = {
         return workflow.emit('response');
       }
       // TODO Check to see if user is already in a group today
-      /*
       req.app.db.models.User.findById(req.user.id).exec(function(err, user) {
         if (err) {
           return next(err);
         }
-        res.status(200).json(user);
+        var dt = new Date();
+        dt.setHours(0,0,0,0);
+        if (user.currentGroup.joinTime > dt) {
+          workflow.outcome.errors.push('Already picked a group today!');
+          return workflow.emit('response');
+        }
+        else{
+          workflow.emit('findGroup');
+        }
       });
-      */
-      workflow.emit('findGroup');
     });
     workflow.on('findGroup', function() {
       //right now this just finds ones made today
