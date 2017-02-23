@@ -51,7 +51,10 @@ var ludiGroup = {
 
     workflow.on('createLudiGroup', function() {
       var fieldsToSet = {
-        ludiCategory: req.body.ludiCategory
+        ludiCategory: 
+          {
+            id: req.body.ludiCategory.id
+          }
       };
 
       req.app.db.models.LudiGroup.create(fieldsToSet, function(err, ludiGroup) {
@@ -75,7 +78,7 @@ var ludiGroup = {
         workflow.outcome.errors.push('Missing category information');
         return workflow.emit('response');
       }
-      // TODO Check to see if user is already in a group today
+      // Check to see if the user is already in a group today
       req.app.db.models.User.findById(req.user.id).exec(function(err, user) {
         if (err) {
           return next(err);
@@ -92,7 +95,7 @@ var ludiGroup = {
       });
     });
     workflow.on('findGroup', function() {
-      //right now this just finds ones made today
+      // Find a LudiGroup that was made today with the right LudiCategory
       var start = new Date();
       start.setHours(0,0,0,0);
 
@@ -108,10 +111,12 @@ var ludiGroup = {
           for (var i=0;i<ludiGroups.length;i++){
             if (ludiGroups[i].users.length < 40 && !found){
               found = true;
+              // Add the User to that list of LudiCategories
               req.app.db.models.LudiGroup.findByIdAndUpdate(ludiGroups[i].id,{$push: {"users": {_id: req.user.id, name: req.user.username}}},{safe: true, upsert: true,'new':true},function(err, ludiGroup) {
                   if (err) {
                     return workflow.emit('exception', err);
                   }
+                  // Add the LudiCategory to the User.
                   req.app.db.models.User.findByIdAndUpdate(req.user.id,{currentGroup:{id:ludiGroup.id}},{safe: true, upsert: true}, function(err,user){
                     if (err) {
                       return workflow.emit('exception', err);
@@ -130,7 +135,6 @@ var ludiGroup = {
         }
       });
     });
-
 
     workflow.on('newGroup',function(){
       var fieldsToSet = {

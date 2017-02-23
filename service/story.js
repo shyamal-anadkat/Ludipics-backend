@@ -89,7 +89,7 @@ var story = {
 
     workflow.emit('validate');
   },
-  // TODO: add to story
+
   update: function(req, res, next){
     var workflow = req.app.utility.workflow(req, res);
 
