@@ -72,11 +72,20 @@ var ludiGroup = {
 
   place: function(req, res, next){
     var workflow = req.app.utility.workflow(req, res);
+    var categoryName = "";
     workflow.on('validate', function() {
       if (!req.body.ludiCategory || !req.body.ludiCategory.id) {
         workflow.outcome.errors.push('Missing category information');
         return workflow.emit('response');
       }
+      req.app.db.models.LudiCategory.findById(req.body.ludiCategory.id).exec(function(err, ludiCategory) {
+        if (err) {
+          return next(err);
+        }
+        categoryName = ludiCategory.name;
+        workflow.emit('findGroup');
+      });
+
       // Check to see if the user is already in a group today
       /*
       req.app.db.models.User.findById(req.user.id).exec(function(err, user) {
@@ -93,8 +102,7 @@ var ludiGroup = {
           workflow.emit('findGroup');
         }
       });
-      */
-      workflow.emit('findGroup');
+      */ 
     });
     workflow.on('findGroup', function() {
       // Find a LudiGroup that was made today with the right LudiCategory
@@ -141,7 +149,7 @@ var ludiGroup = {
 
     workflow.on('newGroup',function(){
       var fieldsToSet = {
-        ludiCategory: {id: req.body.ludiCategory.id, name: req.body.ludiCategory.name},
+        ludiCategory: {id: req.body.ludiCategory.id, name: categoryName},
         users: [{_id: req.user.id, name: req.user.username}]
       };
 
