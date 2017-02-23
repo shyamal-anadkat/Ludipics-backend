@@ -51,7 +51,7 @@ var story = {
         return workflow.emit('response');
       }
       // check if user in group
-      req.app.db.models.Users.findById(req.user.id, function(err, user){
+      req.app.db.models.User.findById(req.user.id, function(err, user){
         if (err){
           return workflow.emit('exception', err);
         }
