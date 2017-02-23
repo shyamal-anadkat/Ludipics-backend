@@ -70,7 +70,6 @@ var ludiGroup = {
     workflow.emit('validate');
   },
 
-  // TODO Add user to group
   place: function(req, res, next){
     var workflow = req.app.utility.workflow(req, res);
     workflow.on('validate', function() {
@@ -79,6 +78,7 @@ var ludiGroup = {
         return workflow.emit('response');
       }
       // Check to see if the user is already in a group today
+      /*
       req.app.db.models.User.findById(req.user.id).exec(function(err, user) {
         if (err) {
           return next(err);
@@ -93,6 +93,8 @@ var ludiGroup = {
           workflow.emit('findGroup');
         }
       });
+      */
+      workflow.emit('findGroup');
     });
     workflow.on('findGroup', function() {
       // Find a LudiGroup that was made today with the right LudiCategory
@@ -116,8 +118,9 @@ var ludiGroup = {
                   if (err) {
                     return workflow.emit('exception', err);
                   }
+                  var time = new Date()
                   // Add the LudiCategory to the User.
-                  req.app.db.models.User.findByIdAndUpdate(req.user.id,{currentGroup:{id:ludiGroup.id}},{safe: true, upsert: true}, function(err,user){
+                  req.app.db.models.User.findByIdAndUpdate(req.user.id,{currentGroup:{id:ludiGroup.id, joinTime:time}},{safe: true, upsert: true}, function(err,user){
                     if (err) {
                       return workflow.emit('exception', err);
                     }
@@ -146,8 +149,8 @@ var ludiGroup = {
         if (err) {
           return workflow.emit('exception', err);
         }
-
-        req.app.db.models.User.findByIdAndUpdate(req.user.id,{currentGroup:{id:ludiGroup.id}},{safe: true, upsert: true}, function(err,user){
+        var time = new Date()
+        req.app.db.models.User.findByIdAndUpdate(req.user.id,{currentGroup:{id:ludiGroup.id,joinTime:time}},{safe: true, upsert: true}, function(err,user){
           if (err) {
             return workflow.emit('exception', err);
           }
