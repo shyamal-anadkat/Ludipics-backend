@@ -46,7 +46,7 @@ var story = {
 
     workflow.on('validate', function() {
 
-      if (!req.body.ludiGroup || !req.body.ludiGroup._id) {
+      if (!req.body.ludiGroup || !req.body.ludiGroup.id) {
         workflow.outcome.errors.push('Missing group information');
         return workflow.emit('response');
       }
@@ -55,7 +55,7 @@ var story = {
         if (err){
           return workflow.emit('exception', err);
         }
-        if (user.currentGroup.id != req.body.ludiGroup._id) {
+        if (user.currentGroup.id != req.body.ludiGroup.id) {
           workflow.outcome.errors.push("User not in group");
           return workflow.emit('response');
         }
@@ -72,7 +72,7 @@ var story = {
           name: req.user.name
         },
         ludiGroup: {
-          id: req.body.ludiGroup._id
+          id: req.body.ludiGroup.id
         }
 
       };
