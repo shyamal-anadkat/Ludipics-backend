@@ -1,5 +1,5 @@
 'use strict';
-// public api
+
 var story = {
   find: function(req, res, next){
     req.query.limit = req.query.limit ? parseInt(req.query.limit, null) : 20;
@@ -132,13 +132,11 @@ var story = {
   delete: function(req, res, next){
     var workflow = req.app.utility.workflow(req, res);
 
-
     workflow.on('deleteStory', function(err) {
       req.app.db.models.Story.findByIdAndRemove(req.params.id, function(err, story) {
         if (err) {
           return workflow.emit('exception', err);
         }
-
         workflow.emit('response');
       });
     });

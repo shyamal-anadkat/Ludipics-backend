@@ -1,5 +1,5 @@
 'use strict';
-// public api
+
 var ludiGroup = {
   find: function(req, res, next){
     req.query.limit = req.query.limit ? parseInt(req.query.limit, null) : 20;
@@ -66,7 +66,6 @@ var ludiGroup = {
         return workflow.emit('response');
       });
     });
-
     workflow.emit('validate');
   },
 
@@ -83,26 +82,23 @@ var ludiGroup = {
           return next(err);
         }
         categoryName = ludiCategory.name;
-        workflow.emit('findGroup');
+        req.app.db.models.User.findById(req.user.id).exec(function(err, user) {
+          if (err) {
+            return next(err);
+          }
+          var dt = new Date();
+          dt.setHours(0,0,0,0);
+          if (user.currentGroup.joinTime > dt) {
+            workflow.outcome.errors.push('Already picked a group today!');
+            return workflow.emit('response');
+          }
+          else{
+            workflow.emit('findGroup');
+          }
+        });
       });
 
       // Check to see if the user is already in a group today
-      /*
-      req.app.db.models.User.findById(req.user.id).exec(function(err, user) {
-        if (err) {
-          return next(err);
-        }
-        var dt = new Date();
-        dt.setHours(0,0,0,0);
-        if (user.currentGroup.joinTime > dt) {
-          workflow.outcome.errors.push('Already picked a group today!');
-          return workflow.emit('response');
-        }
-        else{
-          workflow.emit('findGroup');
-        }
-      });
-      */ 
     });
     workflow.on('findGroup', function() {
       // Find a LudiGroup that was made today with the right LudiCategory
