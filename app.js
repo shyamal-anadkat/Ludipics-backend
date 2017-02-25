@@ -12,7 +12,8 @@ var config = require('./config'),
     passport = require('passport'),
     mongoose = require('mongoose'),
     helmet = require('helmet'),
-    csrf = require('csurf');
+    csrf = require('csurf'),
+    schedule = require('node-schedule');
 
 //create express app
 var app = express();
@@ -86,6 +87,9 @@ app.utility.upload = app.utility.multer({ dest: './client/dist/img/' });
 
 //setup routes
 require('./routes')(app, passport);
+
+//setup jobs
+require('./jobs')(app, schedule);
 
 //custom (friendly) error handler
 app.use(require('./service/http').http500);
