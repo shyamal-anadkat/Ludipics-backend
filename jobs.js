@@ -16,9 +16,13 @@ function getRandom(arr, n) {
     return result;
 }
 
-function findTopForLudiCategoryInDay(app,day,daily,ludiCategory){
+// Where the 'Magic' happens
+// This is broken out because of the way for loops work. 
+function makeHighlightsForLudiCategoryForDay(app,day,daily,ludiCategory){
 	app.db.models.LudiGroup.find({"ludiCategory.id":ludiCategory._id,"timeCreated":{"$gte": day}},function(err, ludiGroups){
 		if (ludiGroups){
+			// This is janky. Because there's a callback inside of this loop, you can't actually access the ludiGroup that you're making the
+			// Post calls id. This is fine because we don't need anymore information about the group at this point.
 			for (var j = 0; j < ludiGroups.length; j++){
 				app.db.models.Post.find({"ludiGroup.id":ludiGroups[j].id,"timeCreated":{"$gte": day}},function(err, posts){
 					if (posts){
@@ -28,6 +32,7 @@ function findTopForLudiCategoryInDay(app,day,daily,ludiCategory){
 								topPost = posts[k];
 							}
 						}
+						// This isn't even in the Mongoose documentation. The '$' allow you to reference an index of an array.
 						app.db.models.Daily.findOneAndUpdate(
 							{"_id":daily._id,"ludiCategories._id":ludiCategory._id},
 							{ 
@@ -39,7 +44,6 @@ function findTopForLudiCategoryInDay(app,day,daily,ludiCategory){
 								if (err){
 									console.log(err);
 								}
-								console.log(d)
 							}					
 						);
 					}
@@ -51,6 +55,7 @@ function findTopForLudiCategoryInDay(app,day,daily,ludiCategory){
 
 exports = module.exports = function(app, schedule) {
 	// Daily creation
+	// Runs at 00:00:01
 	schedule.scheduleJob('1 0 0 * * *', function(){
 		console.log('Creating Daily');
 		app.db.models.LudiCategory.find({},function (err, LudiCategories) {
@@ -74,8 +79,9 @@ exports = module.exports = function(app, schedule) {
       		});
 		});
 	});
-	// TODO Find highlights from previous day.
-	schedule.scheduleJob('1 * * * * *', function(){
+	// Highlights high level
+	// Runs at 00:00:00
+	schedule.scheduleJob('0 0 0 * * *', function(){
 		console.log("Generating Highlights")
 		var yesterday = new Date();
 		yesterday.setDate(yesterday.getDate() - 1);
@@ -85,8 +91,7 @@ exports = module.exports = function(app, schedule) {
 		app.db.models.Daily.findOne({'date':yesterday}, function(err, daily){
 			if (daily){
 				for (var i = 0; i < daily.ludiCategories.length; i++){
-					console.log(daily)
-					findTopForLudiCategoryInDay(app,yesterday,daily,daily.ludiCategories[i]);
+					makeHighlightsForLudiCategoryForDay(app,yesterday,daily,daily.ludiCategories[i]);
 				}
 			}
 		});
