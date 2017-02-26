@@ -4,9 +4,7 @@ var post = {
 	find: function (req, res, next) {
 		// Double check this
 		
-	    req.query.user = req.query.user ? req.query.user : '';
-	    req.query.ludiGroup = req.query.ludiGroup ? req.query.ludiGroup : '';
-	    req.query.story = req.query.story ? req.query.story : '';
+
 	    req.query.limit = req.query.limit ? parseInt(req.query.limit, null) : 20;
 	    req.query.page = req.query.page ? parseInt(req.query.page, null) : 1;
 	    req.query.sort = req.query.sort ? req.query.sort : '_id';

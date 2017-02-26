@@ -84,7 +84,11 @@ var ludiGroup = {
         categoryName = ludiCategory.name;
         req.app.db.models.User.findById(req.user.id).exec(function(err, user) {
           if (err) {
-            return next(err);
+            workflow.outcome.errors.push('Looks like this is not a category');
+            return workflow.emit('response');
+          }
+          if (!user){
+            return 
           }
           var dt = new Date();
           dt.setHours(0,0,0,0);
