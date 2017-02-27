@@ -44,15 +44,21 @@ var post = {
 	        	return workflow.emit('response');
 	      	}
 	      	if (!req.body.ludiGroup) {
-	        	workflow.outcome.errors.push('A group is required.');
+	        	workflow.outcome.errors.push('A ludiGroup is required.');
 	        	return workflow.emit('response');
 	      	}
 	      	if (!req.file) {
 	        	workflow.outcome.errors.push('Must upload an image');
 	        	return workflow.emit('response');
 	      	}
-
-	      workflow.emit('createPost');
+	      	req.app.db.models.Story.findById(req.body.story).exec(function (err, story){
+	      		console.log(story.ludiGroup.id, req.body.ludiGroup)
+	      		if (story.ludiGroup.id != req.body.ludiGroup){
+	      			workflow.outcome.errors.push('story must be in ludiGroup.');
+	        		return workflow.emit('response');
+	      		}
+	      		workflow.emit('createPost');
+	      	});
 	    });
 
 	    workflow.on('createPost', function () {

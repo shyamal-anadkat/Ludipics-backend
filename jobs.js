@@ -76,7 +76,6 @@ exports = module.exports = function(app, schedule) {
 	        	if (err) {
 	        		console.log(err);
 	        	}
-	        	console.log(daily);
       		});
 		});
 	});
@@ -88,7 +87,6 @@ exports = module.exports = function(app, schedule) {
 		yesterday.setDate(yesterday.getDate() - 1);
 		yesterday.setHours(0,0,0,0);
 		yesterday.toISOString();
-		console.log(yesterday);
 		app.db.models.Daily.findOne({'date':yesterday}, function(err, daily){
 			if (daily){
 				for (var i = 0; i < daily.ludiCategories.length; i++){
