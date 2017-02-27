@@ -1,6 +1,7 @@
 'use strict';
 
 // http://stackoverflow.com/questions/19269545/how-to-get-n-no-elements-randomly-from-an-array
+// N random elements from array
 
 function getRandom(arr, n) {
     var result = new Array(n),
@@ -16,7 +17,7 @@ function getRandom(arr, n) {
     return result;
 }
 
-// Where the 'Magic' happens
+// Where the 'Magic' happens for highlights
 // This is broken out because of the way for loops work. 
 function makeHighlightsForLudiCategoryForDay(app,day,daily,ludiCategory){
 	app.db.models.LudiGroup.find({"ludiCategory.id":ludiCategory._id,"timeCreated":{"$gte": day}},function(err, ludiGroups){
@@ -60,7 +61,7 @@ exports = module.exports = function(app, schedule) {
 		console.log('Creating Daily');
 		app.db.models.LudiCategory.find({},function (err, LudiCategories) {
 			if (err) {
-				console.log(err)
+				console.log(err);
 			}
 			var newCats = getRandom(LudiCategories,3);
 			var start = new Date();
@@ -86,8 +87,8 @@ exports = module.exports = function(app, schedule) {
 		var yesterday = new Date();
 		yesterday.setDate(yesterday.getDate() - 1);
 		yesterday.setHours(0,0,0,0);
-		yesterday.toISOString()
-		console.log(yesterday)
+		yesterday.toISOString();
+		console.log(yesterday);
 		app.db.models.Daily.findOne({'date':yesterday}, function(err, daily){
 			if (daily){
 				for (var i = 0; i < daily.ludiCategories.length; i++){
