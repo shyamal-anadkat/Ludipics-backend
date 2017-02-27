@@ -58,7 +58,7 @@ angular.module('admin.ludiCategories.detail').controller('AdminLudiCategoriesDet
       $scope.detailAlerts = [];
       var data = {
         name: $scope.ludiCategory.name,
-        pivot: $scope.ludiCategory.pivot
+        description: $scope.ludiCategory.description
       };
       adminResource.updateLudiCategory($scope.ludiCategory._id, data).then(function(result){
         if(result.success){

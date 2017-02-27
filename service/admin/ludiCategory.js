@@ -14,7 +14,7 @@ var ludiCategory = {
 
 	    req.app.db.models.LudiCategory.pagedFind({
 	      filters: filters,
-	      keys: 'name',
+	      keys: 'name description',
 	      limit: req.query.limit,
 	      page: req.query.page,
 	      sort: req.query.sort
@@ -89,6 +89,43 @@ var ludiCategory = {
 	      }
 	      res.status(200).json(ludiCategory);
 	    });
+	},
+	update: function (req, res, next) {
+		var workflow = req.app.utility.workflow(req, res);
+
+		workflow.on('validate', function () {
+		  if (!req.user.roles.admin.isMemberOf('root')) {
+		    workflow.outcome.errors.push('You may not update LudiCategories.');
+		    return workflow.emit('response');
+		  }
+
+		  if (!req.body.name) {
+		    workflow.outcome.errfor.name = 'required';
+		    return workflow.emit('response');
+		  }
+
+		  workflow.emit('patchLudiCategory');
+		});
+
+
+		workflow.on('patchLudiCategory', function () {
+		  var fieldsToSet = {
+		    description: req.body.description,
+		    name: req.body.name
+		  };
+		  var options = { new: true };
+
+		  req.app.db.models.LudiCategory.findByIdAndUpdate(req.params.id, fieldsToSet, options, function (err, ludiCategory) {
+		    if (err) {
+		      return workflow.emit('exception', err);
+		    }
+
+		    workflow.outcome.ludiCategory = ludiCategory;
+		    return workflow.emit('response');
+		  });
+		});
+
+		workflow.emit('validate');
 	},
   	delete: function (req, res, next) {
 	    var workflow = req.app.utility.workflow(req, res);

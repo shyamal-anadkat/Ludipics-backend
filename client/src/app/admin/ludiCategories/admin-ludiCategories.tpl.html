@@ -3,8 +3,8 @@
         <div class="page-header">
             <form class="form-inline pull-right" name="addLudiCategoryForm">
                 <div class="input-group">
-                    <input name="pivot" type="text" placeholder="pivot" class="form-control" ng-model="add.pivot" required>
                     <input name="name" type="text" placeholder="name" class="form-control" ng-model="add.name" required>
+                    <input name="description" type="text" placeholder="description" class="form-control" ng-model="add.description" required>
                     <button type="button" class="btn btn-primary" ng-disabled="!canSave(addLudiCategoryForm)" ng-click="addLudiCategory()">Add New</button>
                 </div>
             </form>
@@ -12,10 +12,6 @@
         </div>
         <form class="filters">
             <div class="row">
-                <div class="col-sm-3">
-                    <label>Pivot Search</label>
-                    <input name="pivot" type="text" class="form-control" ng-model="filters.pivot" ng-model-options="{ debounce: 500 }" ng-change="filtersUpdated()">
-                </div>
                 <div class="col-sm-3">
                     <label>Name Search</label>
                     <input name="name" type="text" class="form-control" ng-model="filters.name" ng-model-options="{ debounce: 500 }" ng-change="filtersUpdated()">
@@ -44,16 +40,16 @@
             <thead>
             <tr>
                 <th></th>
-                <th>pivot</th>
-                <th class="stretch">name</th>
+                <th>name</th>
+                <th>description</th>
                 <th>id</th>
             </tr>
             </thead>
             <tbody>
             <tr ng-repeat="ludiCategory in ludiCategories">
                 <td><a class="btn btn-default btn-sm" ng-href="/admin/ludiCategories/{{ludiCategory._id}}">Edit</a></td>
-                <td ng-bind="ludiCategory.pivot"></td>
                 <td ng-bind="ludiCategory.name"></td>
+                <td ng-bind="ludiCategory.description"></td>
                 <td class="nowrap" ng-bind="ludiCategory._id"></td>
             </tr>
             <tr ng-show="ludiCategories.length === 0">

@@ -6,15 +6,15 @@
         <form name="detailForm"><fieldset>
             <legend>Details</legend>
             <alert ng-repeat="alert in detailAlerts" type="{{alert.type}}" close="closeDetailAlert($index)">{{alert.msg}}</alert>
-            <div class="form-group" ng-class="{'has-error': hasError(detailForm.pivot)}">
-                <label class="control-label" for="pivot">pivot:</label>
-                <input type="text" name="pivot" id="pivot" class="form-control" ng-model="ludiCategory.pivot" required>
-                <span class="help-block" ng-show="showError(detailForm.pivot, 'required')">This field is required</span>
-            </div>
             <div class="form-group" ng-class="{'has-error': hasError(detailForm.name)}">
                 <label class="control-label" for="name">Name:</label>
                 <input type="text" name="name" id="name" class="form-control" ng-model="ludiCategory.name" required>
                 <span class="help-block" ng-show="showError(detailForm.name, 'required')">This field is required</span>
+            </div>
+            <div class="form-group" ng-class="{'has-error': hasError(detailForm.description)}">
+                <label class="control-label" for="description">Description:</label>
+                <input type="text" name="description" id="description" class="form-control" ng-model="ludiCategory.description" required>
+                <span class="help-block" ng-show="showError(detailForm.description, 'required')">This field is required</span>
             </div>
             <div class="form-group">
                 <button type="button" class="btn btn-primary" ng-disabled="!canSave(detailForm)" ng-click="update()">Update</button>
