@@ -5,5 +5,6 @@ angular.module('admin', [
   'admin.administrators',
   'admin.admin-groups',
   'admin.statuses',
-  'admin.categories'
+  'admin.categories',
+  'admin.ludiCategories'
 ]);

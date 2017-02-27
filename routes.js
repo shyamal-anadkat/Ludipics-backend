@@ -259,6 +259,10 @@ exports = module.exports = function(app, passport) {
   app.get('/admin/categories', useAngular);
   app.get('/admin/categories/:id', useAngular);
 
+  //admin > ludiCategories
+  app.get('/admin/ludiCategories',useAngular);
+  app.get('/admin/ludiCategories/:id',useAngular);
+
   //other routes not found nor begin with /api is handled by Angular
   app.all(/^(?!\/api).*$/, useAngular);
 

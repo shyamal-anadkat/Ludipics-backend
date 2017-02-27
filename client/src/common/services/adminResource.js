@@ -7,6 +7,8 @@ angular.module('services.adminResource', []).factory('adminResource', ['$http', 
   var adminGroupUrl = baseUrl + '/admin/admin-groups';
   var adminStatusesUrl = baseUrl + '/admin/statuses';
   var adminCategoriesUrl = baseUrl + '/admin/categories';
+  var regLudiCategoriesUrl = baseUrl + '/ludiCategories';
+  var adminLudiCategoriesUrl = baseUrl + '/admin/ludiCategories';
 
   var processResponse = function(res){
     return res.data;
@@ -220,5 +222,30 @@ angular.module('services.adminResource', []).factory('adminResource', ['$http', 
     var url = adminCategoriesUrl + '/' + _id;
     return $http.delete(url).then(processResponse, processError);
   };
+
+  // ----- ludiCategories api -----
+  resource.findLudiCategories = function(filters){
+    if(angular.equals({}, filters)){
+      filters = undefined;
+    }
+    return $http.get(regLudiCategoriesUrl, { params: filters }).then(processResponse, processError);
+  };
+  resource.addLudiCategory = function(data){
+    return $http.post(adminLudiCategoriesUrl, data).then(processResponse, processResponse);
+  };
+  resource.findLudiCategory = function(_id){
+    var url = regLudiCategoriesUrl + '/' + _id;
+    return $http.get(url).then(processResponse, processError);
+  };
+  resource.updateLudiCategory = function(_id, data){
+    var url = adminLudiCategoriesUrl + '/' + _id;
+    return $http.put(url, data).then(processResponse, processError);
+  };
+  resource.deleteLudiCategory = function(_id){
+    var url = adminLudiCategoriesUrl + '/' + _id;
+    return $http.delete(url).then(processResponse, processError);
+  };
+
+
   return resource;
 }]);
