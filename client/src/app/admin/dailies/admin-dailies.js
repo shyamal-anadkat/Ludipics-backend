@@ -85,10 +85,10 @@ angular.module('admin.dailies.index').controller('DailiesIndexCtrl', ['$scope', 
     // $scope vars
     //select elements and their associating options
     $scope.sorts = [
+      {label: "date \u25B2", value: "date"},
+      {label: "date \u25BC", value: "-date"},
       {label: "id \u25B2", value: "_id"},
-      {label: "id \u25BC", value: "-_id"},
-      {label: "name \u25B2", value: "name"},
-      {label: "name \u25BC", value: "-name"}
+      {label: "id \u25BC", value: "-_id"}
     ];
     $scope.limits = [
       {label: "10 items", value: 10},

@@ -29,15 +29,35 @@ angular.module('admin.dailies.detail').config(['$routeProvider', function($route
               return $q.reject();
             });
           return promise;
+        }],
+        ludiCategories: ['$q', '$route', '$location', 'securityAuthorization', 'adminResource', function($q, $route, $location, securityAuthorization, adminResource){
+          //get app stats only for admin-user, otherwise redirect to /account
+          var redirectUrl;
+          var promise = securityAuthorization.requireAdminUser()
+            .then(function(){
+              return adminResource.findLudiCategories();
+            }, function(reason){
+              //rejected either user is un-authorized or un-authenticated
+              redirectUrl = reason === 'unauthorized-client'? '/account': '/login';
+              return $q.reject();
+            })
+            .catch(function(){
+              redirectUrl = redirectUrl || '/account';
+              $location.path(redirectUrl);
+              return $q.reject();
+            });
+          return promise;
         }]
       }
     });
 }]);
-angular.module('admin.dailies.detail').controller('AdminDailiesDetailCtrl', ['$scope', '$route', '$location', '$log', 'utility', 'adminResource', 'daily',
-  function($scope, $route, $location, $log, utility, adminResource, data) {
+angular.module('admin.dailies.detail').controller('AdminDailiesDetailCtrl', ['$scope', '$route', '$location', '$log', 'utility', 'adminResource', 'daily','ludiCategories',
+  function($scope, $route, $location, $log, utility, adminResource, data,ludiCategories) {
     // local vars
     var deserializeData = function(data){
       $scope.daily = data;
+      console.log(ludiCategories);
+      $scope.ludiCategories = ludiCategories.data;
     };
     var closeAlert = function(alert, ind){
       alert.splice(ind, 1);
