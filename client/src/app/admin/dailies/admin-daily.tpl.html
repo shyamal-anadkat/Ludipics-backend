@@ -13,11 +13,27 @@
             </div>
             <div class="form-group">
                 <label class="control-label" for="ludiCategories">LudiCategories:</label>
-                <ul ng-repeat="ludiCategory in daily.ludiCategories">
-                    <!-- This will be editable someday soon -->
-                    <li>{{ ludiCategory.name }}</li>
-                </ul>
-
+                    <div class="form-group">
+                        <select
+                            class="form-control"
+                            ng-model="cats[0]" 
+                            ng-options="ludiCategory.name for ludiCategory in ludiCategories">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select
+                            class="form-control"
+                            ng-model="cats[1]" 
+                            ng-options="ludiCategory.name for ludiCategory in ludiCategories">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <select
+                            class="form-control"
+                            ng-model="cats[2]" 
+                            ng-options="ludiCategory.name for ludiCategory in ludiCategories">
+                        </select>
+                    </div>
             </div>
             <div class="form-group">
                 <button type="button" class="btn btn-primary" ng-disabled="!canSave(detailForm)" ng-click="update()">Update</button>
@@ -35,10 +51,5 @@
                 <button type="button" class="btn btn-danger btn-delete" ng-click="deleteDaily()">Delete</button>
             </div>
         </fieldset></form>
-        <ul>
-            <li ng-repeat="ludiCategory in ludiCategories">
-                {{ ludiCategory.name }}
-            </li>
-        </ul>
     </div>
 </div>

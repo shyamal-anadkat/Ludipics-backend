@@ -81,11 +81,16 @@ var daily = {
   },
 
   update: function (req, res, next) {
+    console.log(req.body)
     var workflow = req.app.utility.workflow(req, res);
 
     workflow.on('validate', function () {
       if (!req.user.roles.admin.isMemberOf('root')) {
         workflow.outcome.errors.push('You may not update dailies');
+        return workflow.emit('response');
+      }
+      if (!req.body.ludiCategories) {
+        workflow.outcome.errors.push('Categories are required');
         return workflow.emit('response');
       }
 

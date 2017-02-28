@@ -56,8 +56,19 @@ angular.module('admin.dailies.detail').controller('AdminDailiesDetailCtrl', ['$s
     // local vars
     var deserializeData = function(data){
       $scope.daily = data;
-      console.log(ludiCategories);
       $scope.ludiCategories = ludiCategories.data;
+    };
+    var setCats = function(){
+      $scope.cats = ["","",""];
+      if ($scope.daily.ludiCategories.length == 3){
+        for (var i = 0; i < 3; i++){
+          for (var j = 0; j < $scope.ludiCategories.length; j++){
+            if ($scope.daily.ludiCategories[i]._id == $scope.ludiCategories[j]._id){
+              $scope.cats[i] = $scope.ludiCategories[j];
+            }
+          }
+        }
+      }
     };
     var closeAlert = function(alert, ind){
       alert.splice(ind, 1);
@@ -77,8 +88,8 @@ angular.module('admin.dailies.detail').controller('AdminDailiesDetailCtrl', ['$s
     $scope.update = function(){
       $scope.detailAlerts = [];
       var data = {
-        name: $scope.daily.name,
-        ludiCategories: $scope.daily.ludiCategories
+        date: $scope.daily.date,
+        ludiCategories: $scope.cats
       };
       adminResource.updateDaily($scope.daily._id, data).then(function(result){
         if(result.success){
@@ -114,5 +125,7 @@ angular.module('admin.dailies.detail').controller('AdminDailiesDetailCtrl', ['$s
 
     //initialize
     deserializeData(data);
+    setCats()
+    console.log($scope.cats)
   }
 ]);
