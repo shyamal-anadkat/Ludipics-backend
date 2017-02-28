@@ -1,0 +1,39 @@
+<div class="row">
+    <div class="col-xs-12">
+        <div class="page-header">
+            <h1><a href="/admin/dailies">Dailies</a> / {{daily.date}}</h1>
+        </div>
+        <form name="detailForm"><fieldset>
+            <legend>Details</legend>
+            <alert ng-repeat="alert in detailAlerts" type="{{alert.type}}" close="closeDetailAlert($index)">{{alert.msg}}</alert>
+            <div class="form-group" ng-class="{'has-error': hasError(detailForm.date)}">
+                <label class="control-label" for="date">Date:</label>
+                <input type="text" name="date" id="date" class="form-control" ng-model="daily.date" required>
+                <span class="help-block" ng-show="showError(detailForm.date, 'required')">This field is required</span>
+            </div>
+            <div class="form-group" ng-class="{'has-error': hasError(detailForm.ludiCategories)}">
+                <label class="control-label" for="ludiCategories">LudiCategories:</label>
+                <ul ng-repeat="ludiCategory in daily.ludiCategories">
+                    <!-- This will be editable someday soon -->
+                    <li>{{ ludiCategory.name }}</li>
+                </ul>
+
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-primary" ng-disabled="!canSave(detailForm)" ng-click="update()">Update</button>
+            </div>
+        </fieldset></form>
+        <form name="deleteForm"><fieldset>
+            <legend>Danger Zone</legend>
+            <alert ng-repeat="alert in deleteAlerts" type="{{alert.type}}" close="closeDeleteAlert($index)">{{alert.msg}}</alert>
+            <div class="form-group">
+                <span class="help-block">
+                    <span class="label label-danger">If you do this, it cannot be undone.</span>&nbsp;<span class="text-muted">You may also create orphaned document relationships too.</span>
+                </span>
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-danger btn-delete" ng-click="deleteDaily()">Delete</button>
+            </div>
+        </fieldset></form>
+    </div>
+</div>
