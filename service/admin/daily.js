@@ -20,7 +20,7 @@ var daily = {
 
     req.app.db.models.Daily.pagedFind({
       filters: filters,
-      keys: 'date ludiCategory.id',
+      keys: 'date ludiCategories',
       limit: req.query.limit,
       page: req.query.page,
       sort: req.query.sort

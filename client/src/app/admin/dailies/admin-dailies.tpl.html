@@ -1,13 +1,6 @@
 <div class="row" id="admin-dailies-index">
     <div class="col-xs-12">
         <div class="page-header">
-            <form class="form-inline pull-right" name="addDailyForm">
-                <div class="input-group">
-                    <input name="name" type="text" placeholder="name" class="form-control" ng-model="add.name" required>
-                    <input name="description" type="text" placeholder="description" class="form-control" ng-model="add.description" required>
-                    <button type="button" class="btn btn-primary" ng-disabled="!canSave(addDailyForm)" ng-click="addDaily()">Add New</button>
-                </div>
-            </form>
             <h1>Dailies</h1>
         </div>
         <form class="filters">
@@ -36,6 +29,7 @@
                 </div>
             </div>
         </form>
+        <br>
         <table class="table table-striped">
             <thead>
             <tr>
@@ -48,8 +42,12 @@
             <tbody>
             <tr ng-repeat="daily in dailies">
                 <td><a class="btn btn-default btn-sm" ng-href="/admin/dailies/{{daily._id}}">Edit</a></td>
-                <td ng-bind="daily.date"></td>
-                <td ng-bind="daily.ludiCategories"></td>
+                <td ng-bind="daily.date | date:'yyyy-MM-dd'"></td>
+                <td>
+                    <span ng-repeat="ludiCategory in daily.ludiCategories">
+                        {{ ludiCategory.name }}<span ng-if="!$last">, </span>
+                    </span>
+                </td>
                 <td class="nowrap" ng-bind="daily._id"></td>
             </tr>
             <tr ng-show="dailies.length === 0">
