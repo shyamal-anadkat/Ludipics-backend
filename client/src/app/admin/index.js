@@ -6,5 +6,6 @@ angular.module('admin', [
   'admin.admin-groups',
   'admin.statuses',
   'admin.categories',
-  'admin.ludiCategories'
+  'admin.ludiCategories',
+  'admin.dailies'
 ]);

@@ -9,6 +9,8 @@ angular.module('services.adminResource', []).factory('adminResource', ['$http', 
   var adminCategoriesUrl = baseUrl + '/admin/categories';
   var regLudiCategoriesUrl = baseUrl + '/ludiCategories';
   var adminLudiCategoriesUrl = baseUrl + '/admin/ludiCategories';
+  var regDailiesUrl = baseUrl + '/dailies';
+  var adminDailiesUrl = baseUrl + '/admin/dailies';
 
   var processResponse = function(res){
     return res.data;
@@ -246,6 +248,28 @@ angular.module('services.adminResource', []).factory('adminResource', ['$http', 
     return $http.delete(url).then(processResponse, processError);
   };
 
+  // ----- dailies api -----
+  resource.findDailies = function(filters){
+    if(angular.equals({}, filters)){
+      filters = undefined;
+    }
+    return $http.get(regDailiesUrl, { params: filters }).then(processResponse, processError);
+  };
+  resource.addDaily = function(data){
+    return $http.post(adminDailiesUrl, data).then(processResponse, processResponse);
+  };
+  resource.findDaily = function(_id){
+    var url = regDailiesUrl + '/' + _id;
+    return $http.get(url).then(processResponse, processError);
+  };
+  resource.updateDaily = function(_id, data){
+    var url = adminDailiesUrl + '/' + _id;
+    return $http.put(url, data).then(processResponse, processError);
+  };
+  resource.deleteDaily = function(_id){
+    var url = adminDailiesUrl + '/' + _id;
+    return $http.delete(url).then(processResponse, processError);
+  };
 
   return resource;
 }]);

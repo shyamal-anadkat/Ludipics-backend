@@ -36,6 +36,7 @@ angular.module('admin.index').controller('AdminCtrl', ['$scope', '$log', 'stats'
     $scope.pivoted = {
       categories: stats['Category'],
       statuses: stats['Status'],
-      ludiCategories: stats['LudiCategory']
+      ludiCategories: stats['LudiCategory'],
+      dailies: stats['Daily']
     };
   }]);
