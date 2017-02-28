@@ -31,7 +31,9 @@ angular.module('admin.index').controller('AdminCtrl', ['$scope', '$log', 'stats'
       users: stats['User'],
       accounts: stats['Account'],
       admins: stats['Admin'],
-      groups: stats['AdminGroup']
+      groups: stats['AdminGroup'],
+      ludiGroups: stats['LudiGroup'],
+      posts: stats['Post']
     };
     $scope.pivoted = {
       categories: stats['Category'],
