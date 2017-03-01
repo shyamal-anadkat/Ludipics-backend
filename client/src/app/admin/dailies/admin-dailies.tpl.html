@@ -45,7 +45,7 @@
                 <td ng-bind="daily.date | date:'yyyy-MM-dd'"></td>
                 <td>
                     <span ng-repeat="ludiCategory in daily.ludiCategories">
-                        {{ ludiCategory.name }}<span ng-if="!$last">, </span>
+                        <a ng-href="/admin/ludiCategories/{{ludiCategory._id}}">{{ ludiCategory.name }}</a><span ng-if="!$last">, </span>
                     </span>
                 </td>
                 <td class="nowrap" ng-bind="daily._id"></td>
