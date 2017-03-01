@@ -8,7 +8,9 @@
             <alert ng-repeat="alert in detailAlerts" type="{{alert.type}}" close="closeDetailAlert($index)">{{alert.msg}}</alert>
             <div class="form-group" ng-class="{'has-error': hasError(detailForm.date)}">
                 <label class="control-label" for="date">Date:</label>
-                <input type="text" name="date" id="date" class="form-control" ng-model="daily.date" required>
+                <div style="display:inline-block; min-height:290px;">
+                    <datepicker ng-model="daily.date" id="date" name="date" show-weeks="true" class="well well-sm"></datepicker>
+                </div>
                 <span class="help-block" ng-show="showError(detailForm.date, 'required')">This field is required</span>
             </div>
             <div class="form-group">

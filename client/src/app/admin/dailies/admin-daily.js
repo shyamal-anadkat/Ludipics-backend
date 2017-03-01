@@ -56,11 +56,14 @@ angular.module('admin.dailies.detail').controller('AdminDailiesDetailCtrl', ['$s
     // local vars
     var deserializeData = function(data){
       $scope.daily = data;
+      if (!$scope.daily.date){
+        $scope.daily.date = new Date();
+      }
       $scope.ludiCategories = ludiCategories.data;
     };
     var setCats = function(){
       $scope.cats = ["","",""];
-      if ($scope.daily.ludiCategories.length == 3){
+      if ($scope.daily.ludiCategories && $scope.daily.ludiCategories.length == 3){
         for (var i = 0; i < 3; i++){
           for (var j = 0; j < $scope.ludiCategories.length; j++){
             if ($scope.daily.ludiCategories[i]._id == $scope.ludiCategories[j]._id){
@@ -84,6 +87,16 @@ angular.module('admin.dailies.detail').controller('AdminDailiesDetailCtrl', ['$s
     };
     $scope.closeDeleteAlert = function(ind){
       closeAlert($scope.deleteAlerts, ind);
+    };
+    $scope.format = 'yyyy/MM/dd'
+    $scope.dateOptions = {
+      formatYear: 'yy',
+      maxDate: new Date(2020, 5, 22),
+      minDate: new Date(),
+      startingDay: 1
+    };
+    $scope.popup1 = {
+      opened: false
     };
     $scope.update = function(){
       $scope.detailAlerts = [];
