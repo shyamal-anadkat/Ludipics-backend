@@ -17,6 +17,30 @@ function getRandom(arr, n) {
     return result;
 }
 
+function makeDailyIfNone(app,ludiCategories,date){
+	app.db.models.Daily.find({'date':date},function(err,daily){
+		if (err){
+			console.log(err);
+		}else{
+			console.log(daily);
+			if (daily.length == 0){
+				var newCats = getRandom(ludiCategories,3);
+				var fieldsToSet = {
+	        		date: date,
+	        		name: "",
+	        		ludiCategories: newCats 
+	      		};
+
+	      		app.db.models.Daily.create(fieldsToSet, function (err, daily) {
+		        	if (err) {
+		        		console.log(err);
+		        	}
+	      		});
+			}
+		}
+	});
+}
+
 // Where the 'Magic' happens for highlights
 // This is broken out because of the way for loops work. 
 function makeHighlightsForLudiCategoryForDay(app,day,daily,ludiCategory){
@@ -54,29 +78,24 @@ function makeHighlightsForLudiCategoryForDay(app,day,daily,ludiCategory){
 	});
 }
 
+
 exports = module.exports = function(app, schedule) {
 	// Daily creation
 	// Runs at 00:00:01
 	schedule.scheduleJob('1 0 0 * * *', function(){
 		console.log('Creating Daily');
-		app.db.models.LudiCategory.find({},function (err, LudiCategories) {
+		app.db.models.LudiCategory.find({},function (err, ludiCategories) {
 			if (err) {
 				console.log(err);
 			}
-			var newCats = getRandom(LudiCategories,3);
 			var start = new Date();
-      		start.setHours(0,0,0,0);
-			var fieldsToSet = {
-        		date: start,
-        		name: "",
-        		ludiCategories: newCats 
-      		};
-
-      		app.db.models.Daily.create(fieldsToSet, function (err, daily) {
-	        	if (err) {
-	        		console.log(err);
-	        	}
-      		});
+			start.setHours(0,0,0,0);
+			for (var i=0; i < 40; i++){
+				var d = new Date();
+				d.setDate(start.getDate() + i);
+				d.setHours(0,0,0,0);
+				makeDailyIfNone(app,ludiCategories,d);
+			}
 		});
 	});
 	// Highlights high level

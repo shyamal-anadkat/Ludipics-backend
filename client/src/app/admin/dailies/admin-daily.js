@@ -95,9 +95,6 @@ angular.module('admin.dailies.detail').controller('AdminDailiesDetailCtrl', ['$s
       minDate: new Date(),
       startingDay: 1
     };
-    $scope.popup1 = {
-      opened: false
-    };
     $scope.update = function(){
       $scope.detailAlerts = [];
       var data = {
