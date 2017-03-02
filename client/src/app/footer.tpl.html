@@ -2,6 +2,7 @@
     <div class="container"><span class="copyright pull-right">&#169; 2017 LudiPics</span>
         <ul class="links">
             <li><a href="/">Home</a></li>
+            <li><a href="/admin">Admin</a></li>
             <li ng-if="!isAuthenticated()"><a href="/contact">Contact</a></li>
             <li ng-if="isAuthenticated()"><a href="" ng-click="logout()">Sign Out</a></li>
         </ul>
