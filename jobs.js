@@ -21,28 +21,24 @@ function makeDailyIfNone(app,ludiCategories,date){
 	app.db.models.Daily.find({'date':date},function(err,daily){
 		if (err){
 			console.log(err);
-		}else{
-			console.log(daily);
-			if (daily.length == 0){
-				var newCats = getRandom(ludiCategories,3);
-				var fieldsToSet = {
-	        		date: date,
-	        		name: "",
-	        		ludiCategories: newCats 
-	      		};
+		}else if (daily.length == 0){
+			var newCats = getRandom(ludiCategories,3);
+			var fieldsToSet = {
+        		date: date,
+        		name: "",
+        		ludiCategories: newCats 
+      		};
 
-	      		app.db.models.Daily.create(fieldsToSet, function (err, daily) {
-		        	if (err) {
-		        		console.log(err);
-		        	}
-	      		});
-			}
+      		app.db.models.Daily.create(fieldsToSet, function (err, daily) {
+	        	if (err) {
+	        		console.log(err);
+	        	}
+      		});
 		}
 	});
 }
 
 // Where the 'Magic' happens for highlights
-// This is broken out because of the way for loops work. 
 function makeHighlightsForLudiCategoryForDay(app,day,daily,ludiCategory){
 	app.db.models.LudiGroup.find({"ludiCategory.id":ludiCategory._id,"timeCreated":{"$gte": day}},function(err, ludiGroups){
 		if (ludiGroups){
@@ -90,6 +86,7 @@ exports = module.exports = function(app, schedule) {
 			}
 			var start = new Date();
 			start.setHours(0,0,0,0);
+			// Check up to 40 days in the future
 			for (var i=0; i < 40; i++){
 				var d = new Date();
 				d.setDate(start.getDate() + i);
