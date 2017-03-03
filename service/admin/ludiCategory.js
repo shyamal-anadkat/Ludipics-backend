@@ -40,6 +40,11 @@ var ludiCategory = {
 	        	workflow.outcome.errors.push('A name is required.');
 	        	return workflow.emit('response');
 	      	}
+	      	// Check if valid color
+	      	if (req.body.color && !(/^#[0-9A-F]{6}$/i.test(req.body.color))){
+	      		workflow.outcome.errors.push('This is an invalid color');
+	        	return workflow.emit('response');
+	      	}
 	      workflow.emit('createLudiCategory');
 	    });
 
@@ -47,7 +52,11 @@ var ludiCategory = {
 	      var fieldsToSet = {
 	        name: req.body.name,
 	        description: req.body.description,
-	        image_location: ""//TODO
+	        img: {
+	        	location: "img/" + req.file.filename,
+	        	contentType: 'image/png'
+	        },
+	        color: req.body.color
 	      };
 
 	      req.app.db.models.LudiCategory.create(fieldsToSet, function (err, ludiCategory) {

@@ -62,6 +62,11 @@ var post = {
 	    });
 
 	    workflow.on('createPost', function () {
+	      if (req.file){
+	      	imageLocation = "img/" + req.file.filename;
+	      }else{
+	      	imageLocation = "";
+	      }
 	      var fieldsToSet = {
 	        ludiGroup: {
 	        	id: req.body.ludiGroup
@@ -74,7 +79,7 @@ var post = {
 	        	name: req.user.username
 	        },
 	        img: {
-	        	location: "img/" + req.file.filename,
+	        	location: imageLocation,
 	        	contentType: 'image/png'
 	        }
 	      };
