@@ -179,7 +179,7 @@ workflow.on('initDb', function(){
     });
   }, function(cb){
     // encrypt password
-    var bcrypt = require('bcrypt');
+    var bcrypt = require('bcryptjs');
     bcrypt.genSalt(10, function(err, salt) {
       if (err) {
         return cb(err);

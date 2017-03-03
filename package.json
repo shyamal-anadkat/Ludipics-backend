@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "async": "^1.x.x",
-    "bcrypt": "^0.8.x",
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.x.x",
     "compression": "^1.x.x",
     "connect-mongo": "^0.8.x",

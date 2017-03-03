@@ -57,7 +57,7 @@ exports = module.exports = function(app, mongoose) {
     return returnUrl;
   };
   userSchema.statics.encryptPassword = function(password, done) {
-    var bcrypt = require('bcrypt');
+    var bcrypt = require('bcryptjs');
     bcrypt.genSalt(10, function(err, salt) {
       if (err) {
         return done(err);
