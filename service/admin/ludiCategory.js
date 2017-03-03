@@ -40,28 +40,8 @@ var ludiCategory = {
 	        	workflow.outcome.errors.push('A name is required.');
 	        	return workflow.emit('response');
 	      	}
-
-	      //workflow.emit('duplicateLudiCategoryCheck');
 	      workflow.emit('createLudiCategory');
 	    });
-	    // TODO: worry about duplicate named categories?
-
-	    /*
-	    workflow.on('duplicateLudiCategoryCheck', function () {
-	      req.app.db.models.LudiCategory.find({name:req.body.name}).exec(function (err, ludiCategory) {
-	        if (err) {
-	          return workflow.emit('exception', err);
-	        }
-
-	        if (ludiCategory) {
-	          workflow.outcome.errors.push('That ludiCategory is already taken.');
-	          return workflow.emit('response');
-	        }
-
-	        workflow.emit('createLudiCategory');
-	      });
-	    });
-		*/
 
 	    workflow.on('createLudiCategory', function () {
 	      var fieldsToSet = {
