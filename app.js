@@ -26,9 +26,10 @@ app.config = config;
 
 //setup the web server
 var options = {
-  key: fs.readFileSync('./privatekey.pem'),
-  cert: fs.readFileSync('./server.crt')
+  key: fs.readFileSync('privatekey.pem', 'utf8'),
+  cert: fs.readFileSync('./server.crt','utf8')
 };
+console.log(options)
 app.httpServer = http.createServer(app);
 app.httpsServer = https.createServer(options,app);
 
