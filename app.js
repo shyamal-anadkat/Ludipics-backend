@@ -13,7 +13,10 @@ var config = require('./config'),
     mongoose = require('mongoose'),
     helmet = require('helmet'),
     csrf = require('csurf'),
-    schedule = require('node-schedule');
+    schedule = require('node-schedule'),
+    https = require('https'),
+    fs = require('fs');
+
 
 //create express app
 var app = express();
@@ -22,7 +25,13 @@ var app = express();
 app.config = config;
 
 //setup the web server
-app.server = http.createServer(app);
+var options = {
+  key: fs.readFileSync('./privatekey.pem'),
+  cert: fs.readFileSync('./server.crt')
+};
+app.httpServer = http.createServer(app);
+app.httpsServer = https.createServer(options,app);
+
 
 //setup mongoose
 app.db = mongoose.createConnection(config.mongodb.uri);
@@ -94,8 +103,12 @@ require('./jobs')(app, schedule);
 //custom (friendly) error handler
 app.use(require('./service/http').http500);
 
-
 //listen up
-app.server.listen(app.config.port, function(){
-  console.log("server running")
+
+app.httpsServer.listen(3001, function(){
+  console.log("https server running")
+});
+
+app.httpServer.listen(app.config.port, function(){
+  console.log("http server running")
 });
