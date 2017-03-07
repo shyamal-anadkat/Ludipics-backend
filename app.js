@@ -106,7 +106,7 @@ app.use(require('./service/http').http500);
 
 //listen up
 
-app.httpsServer.listen(3001, function(){
+app.httpsServer.listen(app.config.httpsport, function(){
   console.log("https server running")
 });
 
