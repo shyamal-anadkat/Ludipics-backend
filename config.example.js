@@ -2,6 +2,7 @@
 
 exports.hostname = process.env.hostname || 'localhost';
 exports.port = process.env.PORT || 3000;
+exports.httpsport = process.env.HTTPSPORT || 3001;
 exports.mongodb = {
   uri: process.env.MONGOLAB_URI || process.env.MONGOHQ_URL || '{{MONGO_URI}}'
 };
