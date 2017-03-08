@@ -49,14 +49,24 @@ var ludiCategory = {
 	    });
 
 	    workflow.on('createLudiCategory', function () {
+	      if (!req.file){
+	      	var loc = "default.png";
+	      }else{
+	      	var loc = req.file.filename;
+	      }
+	      if (!req.body.color){
+	      	var colorName = req.body.color
+	      }else{
+	      	var colorName = "#B3B3B3" 
+	      }
 	      var fieldsToSet = {
 	        name: req.body.name,
 	        description: req.body.description,
 	        img: {
-	        	location: "img/" + req.file.filename,
+	        	location: "img/" + loc,
 	        	contentType: 'image/png'
 	        },
-	        color: req.body.color
+	        color: colorName
 	      };
 
 	      req.app.db.models.LudiCategory.create(fieldsToSet, function (err, ludiCategory) {
