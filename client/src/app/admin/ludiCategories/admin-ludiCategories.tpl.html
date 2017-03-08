@@ -1,10 +1,12 @@
 <div class="row" id="admin-ludiCategories-index">
     <div class="col-xs-12">
         <div class="page-header">
-            <form class="form-inline pull-right" name="addLudiCategoryForm">
+            <form class="form-inline pull-right" name="addLudiCategoryForm" enctype="multipart/form-data">
                 <div class="input-group">
                     <input name="name" type="text" placeholder="name" class="form-control" ng-model="add.name" required>
                     <input name="description" type="text" placeholder="description" class="form-control" ng-model="add.description" required>
+                    <input name="color" type="text" placeholder="color" class="form-control" ng-model="add.color" required>
+                    <input name="ludiCategoryImage" type="file" class="form-control" fileRead="add.ludiCategoryImage" class="file">
                     <button type="button" class="btn btn-primary" ng-disabled="!canSave(addLudiCategoryForm)" ng-click="addLudiCategory()">Add New</button>
                 </div>
             </form>

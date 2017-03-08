@@ -29,6 +29,7 @@ var ludiCategory = {
   	},
 	create: function (req, res, next) {
 	    var workflow = req.app.utility.workflow(req, res);
+	    console.log(req.body)
 
 	    workflow.on('validate', function () {
 			if (!req.user.roles.admin.isMemberOf('root')) {
@@ -49,11 +50,6 @@ var ludiCategory = {
 	    });
 
 	    workflow.on('createLudiCategory', function () {
-	      if (req.file){
-	      	var loc = req.file.filename;
-	      }else{
-	      	var loc = "default.png";
-	      }
 	      if (req.body.color){
 	      	var colorName = req.body.color
 	      }else{
@@ -62,10 +58,7 @@ var ludiCategory = {
 	      var fieldsToSet = {
 	        name: req.body.name,
 	        description: req.body.description,
-	        img: {
-	        	location: "img/" + loc,
-	        	contentType: 'image/png'
-	        },
+	        img: req.body.ludiCategoryImage,
 	        color: colorName
 	      };
 

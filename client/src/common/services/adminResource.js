@@ -233,7 +233,15 @@ angular.module('services.adminResource', []).factory('adminResource', ['$http', 
     return $http.get(regLudiCategoriesUrl, { params: filters }).then(processResponse, processError);
   };
   resource.addLudiCategory = function(data){
-    return $http.post(adminLudiCategoriesUrl, data).then(processResponse, processResponse);
+    var opts = {
+      method: 'POST',
+      url: adminLudiCategoriesUrl,
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      data: data
+    }
+    return $http(opts).then(processResponse, processResponse);
   };
   resource.findLudiCategory = function(_id){
     var url = regLudiCategoriesUrl + '/' + _id;

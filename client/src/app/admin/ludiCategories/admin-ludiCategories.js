@@ -1,4 +1,22 @@
 angular.module('admin.ludiCategories.index', ['ngRoute', 'security.authorization', 'services.utility', 'services.adminResource']);
+angular.module('admin.ludiCategories.index').directive("fileread", [function () {
+    return {
+        scope: {
+            fileread: "="
+        },
+        link: function (scope, element, attributes) {
+            element.bind("change", function (changeEvent) {
+                var reader = new FileReader();
+                reader.onload = function (loadEvent) {
+                    scope.$apply(function () {
+                        scope.fileread = loadEvent.target.result;
+                    });
+                }
+                reader.readAsDataURL(changeEvent.target.files[0]);
+            });
+        }
+    }
+}]);
 angular.module('admin.ludiCategories.index').config(['$routeProvider', function($routeProvider){
   $routeProvider
     .when('/admin/ludiCategories', {
@@ -67,6 +85,7 @@ angular.module('admin.ludiCategories.index').controller('LudiCategoriesIndexCtrl
       fetchLudiCategories();
     };
     $scope.addLudiCategory = function(){
+      console.log($scope.add)
       adminResource.addLudiCategory($scope.add).then(function(data){
         $scope.add = {};
         if(data.success){

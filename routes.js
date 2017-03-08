@@ -179,7 +179,7 @@ exports = module.exports = function(app, passport) {
   app.delete('/api/admin/categories/:id', adminCategory.delete);
 
   //admin > Ludi calls
-  app.post('/api/admin/ludiCategories',app.utility.upload.single('ludiCategoryImage'), ludiCategory.create);
+  app.post('/api/admin/ludiCategories', ludiCategory.create);
   app.put('/api/admin/ludiCategories/:id', ludiCategory.update);
   app.delete('/api/admin/ludiCategories/:id', ludiCategory.delete);
   app.post('/api/admin/ludiGroups', ludiGroups.create);
