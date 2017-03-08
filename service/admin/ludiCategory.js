@@ -49,12 +49,12 @@ var ludiCategory = {
 	    });
 
 	    workflow.on('createLudiCategory', function () {
-	      if (!req.file){
-	      	var loc = "default.png";
-	      }else{
+	      if (req.file){
 	      	var loc = req.file.filename;
+	      }else{
+	      	var loc = "default.png";
 	      }
-	      if (!req.body.color){
+	      if (req.body.color){
 	      	var colorName = req.body.color
 	      }else{
 	      	var colorName = "#B3B3B3" 
