@@ -1,21 +1,18 @@
 angular.module('admin.ludiCategories.index', ['ngRoute', 'security.authorization', 'services.utility', 'services.adminResource']);
-angular.module('admin.ludiCategories.index').directive("fileread", [function () {
+angular.module('admin.ludiCategories.index').directive('fileModel', ['$parse', function ($parse) {
     return {
-        scope: {
-            fileread: "="
-        },
-        link: function (scope, element, attributes) {
-            element.bind("change", function (changeEvent) {
-                var reader = new FileReader();
-                reader.onload = function (loadEvent) {
-                    scope.$apply(function () {
-                        scope.fileread = loadEvent.target.result;
-                    });
-                }
-                reader.readAsDataURL(changeEvent.target.files[0]);
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+            
+            element.bind('change', function(){
+                scope.$apply(function(){
+                    modelSetter(scope, element[0].files[0]);
+                });
             });
         }
-    }
+    };
 }]);
 angular.module('admin.ludiCategories.index').config(['$routeProvider', function($routeProvider){
   $routeProvider
@@ -86,8 +83,9 @@ angular.module('admin.ludiCategories.index').controller('LudiCategoriesIndexCtrl
     };
     $scope.addLudiCategory = function(){
       console.log($scope.add)
-      adminResource.addLudiCategory($scope.add).then(function(data){
+      adminResource.addLudiCategory($scope.add,$scope.ludiCategoryImage).then(function(data){
         $scope.add = {};
+        $scope.ludiCategoryImage = "";
         if(data.success){
           $route.reload();
         }else if (data.errors && data.errors.length > 0){
@@ -97,6 +95,7 @@ angular.module('admin.ludiCategories.index').controller('LudiCategoriesIndexCtrl
         }
       }, function(e){
         $scope.add = {};
+        $scope.ludiCategoryImage = "";
         $log.error(e);
       });
     };

@@ -232,16 +232,16 @@ angular.module('services.adminResource', []).factory('adminResource', ['$http', 
     }
     return $http.get(regLudiCategoriesUrl, { params: filters }).then(processResponse, processError);
   };
-  resource.addLudiCategory = function(data){
-    var opts = {
-      method: 'POST',
-      url: adminLudiCategoriesUrl,
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      data: data
-    }
-    return $http(opts).then(processResponse, processResponse);
+  resource.addLudiCategory = function(data,file){
+    var fd = new FormData();
+    fd.append('ludiCategoryImage', file);
+    fd.append('name', data.name);
+    fd.append('description', data.description);
+    fd.append('color', data.color);
+    return $http.post(adminLudiCategoriesUrl, fd, {
+        transformRequest: angular.identity,
+        headers: {'Content-Type': undefined}
+    }).then(processResponse, processError);
   };
   resource.findLudiCategory = function(_id){
     var url = regLudiCategoriesUrl + '/' + _id;
