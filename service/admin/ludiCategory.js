@@ -29,8 +29,6 @@ var ludiCategory = {
   	},
 	create: function (req, res, next) {
 	    var workflow = req.app.utility.workflow(req, res);
-	    console.log(req.body)
-	    console.log(req.file.filename)
 
 	    workflow.on('validate', function () {
 			if (!req.user.roles.admin.isMemberOf('root')) {

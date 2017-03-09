@@ -58,7 +58,6 @@ angular.module('admin.ludiCategories.index').controller('LudiCategoriesIndexCtrl
     var fetchLudiCategories = function(){
       adminResource.findLudiCategories($scope.filters).then(function(data){
         deserializeData(data);
-
         //update url in browser addr bar
         $location.search($scope.filters);
       }, function(e){
@@ -82,7 +81,6 @@ angular.module('admin.ludiCategories.index').controller('LudiCategoriesIndexCtrl
       fetchLudiCategories();
     };
     $scope.addLudiCategory = function(){
-      console.log($scope.add)
       adminResource.addLudiCategory($scope.add,$scope.ludiCategoryImage).then(function(data){
         $scope.add = {};
         $scope.ludiCategoryImage = "";
