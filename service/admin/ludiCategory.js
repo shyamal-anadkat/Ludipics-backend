@@ -107,7 +107,8 @@ var ludiCategory = {
 		workflow.on('patchLudiCategory', function () {
 		  var fieldsToSet = {
 		    description: req.body.description,
-		    name: req.body.name
+		    name: req.body.name,
+		    color: req.body.color
 		  };
 		  var options = { new: true };
 
