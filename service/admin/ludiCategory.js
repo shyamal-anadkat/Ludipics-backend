@@ -62,7 +62,7 @@ var ludiCategory = {
 	      var fieldsToSet = {
 	        name: req.body.name,
 	        description: req.body.description,
-	        img: { location: "img/" + fname, contentType: "img/png" },
+	        img: { location: "/" + fname, contentType: "img/png" },
 	        color: colorName
 	      };
 
