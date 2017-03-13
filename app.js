@@ -53,7 +53,7 @@ app.set('view engine', 'jade');
 app.use(require('morgan')('dev'));
 app.use(require('compression')());
 app.use(require('serve-static')(path.join(__dirname, 'client/dist')));
-app.use(require('serve-static')(path.join(__dirname, 'client/img')));
+app.use(require('serve-static')(path.join(__dirname, 'img')));
 
 app.use(require('method-override')());
 app.use(bodyParser.json());
@@ -94,7 +94,7 @@ app.utility.sendmail = require('./util/sendmail');
 app.utility.slugify = require('./util/slugify');
 app.utility.workflow = require('./util/workflow');
 app.utility.multer  = require('multer');
-app.utility.upload = app.utility.multer({ dest: './client/img/' });
+app.utility.upload = app.utility.multer({ dest: './img/' });
 
 //setup routes
 require('./routes')(app, passport);

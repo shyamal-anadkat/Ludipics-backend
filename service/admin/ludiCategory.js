@@ -14,7 +14,7 @@ var ludiCategory = {
 
 	    req.app.db.models.LudiCategory.pagedFind({
 	      filters: filters,
-	      keys: 'name description',
+	      keys: 'name description color img',
 	      limit: req.query.limit,
 	      page: req.query.page,
 	      sort: req.query.sort

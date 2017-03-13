@@ -45,6 +45,8 @@
                 <th>name</th>
                 <th>description</th>
                 <th>id</th>
+                <th>color</th>
+                <th>image</th>
             </tr>
             </thead>
             <tbody>
@@ -53,6 +55,10 @@
                 <td ng-bind="ludiCategory.name"></td>
                 <td ng-bind="ludiCategory.description"></td>
                 <td class="nowrap" ng-bind="ludiCategory._id"></td>
+                <td ng-bind="ludiCategory.color"></td>
+                <td>
+                    <img class="lcThumb" ng-src="{{ludiCategory.img.location}}" alt="LudiCategory Picture" />
+                </td>
             </tr>
             <tr ng-show="ludiCategories.length === 0">
                 <td colspan="4">no documents matched</td>
