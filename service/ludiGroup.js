@@ -146,7 +146,6 @@ var ludiGroup = {
         }
       });
     });
-
     workflow.on('newGroup',function(){
       var fieldsToSet = {
         ludiCategory: {id: req.body.ludiCategory.id, name: categoryName},

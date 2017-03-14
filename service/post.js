@@ -21,7 +21,7 @@ var post = {
 
 	    req.app.db.models.Post.pagedFind({
 	      filters: filters,
-	      keys: 'user ludiGroup story',
+	      keys: 'user ludiGroup story img votes',
 	      limit: req.query.limit,
 	      page: req.query.page,
 	      sort: req.query.sort
