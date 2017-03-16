@@ -11,7 +11,7 @@ exports = module.exports = function(app, mongoose) {
     },
     currentGroup: {
       id: { type: mongoose.Schema.Types.ObjectId, ref: 'LudiGroup' },
-      joinTime: { type: Date, default: Date.now }
+      joinTime: { type: Date }
     },
     isActive: String,
     timeCreated: { type: Date, default: Date.now },
