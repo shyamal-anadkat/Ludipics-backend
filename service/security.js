@@ -8,7 +8,8 @@ var filterUser = function (user) {
       //lastName: user.lastName,
       admin: !!(user.roles && user.roles.admin),
       isVerified: !!(user.roles && user.roles.account && user.roles.account.isVerified && user.roles.account.isVerified === 'yes'),
-      currentGroup: user.currentGroup
+      currentGroup: user.currentGroup,
+      currentStory: user.currentStory
     };
   }
   return null;

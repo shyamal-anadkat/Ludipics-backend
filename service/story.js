@@ -74,7 +74,6 @@ var story = {
         ludiGroup: {
           id: req.body.ludiGroup.id
         }
-
       };
 
       req.app.db.models.Story.create(fieldsToSet, function(err, group) {

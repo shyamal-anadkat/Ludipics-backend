@@ -13,6 +13,9 @@ exports = module.exports = function(app, mongoose) {
       id: { type: mongoose.Schema.Types.ObjectId, ref: 'LudiGroup' },
       joinTime: { type: Date }
     },
+    currentStory: {
+      id: { type: mongoose.Schema.Types.ObjectId, ref: 'Story' }
+    },
     isActive: String,
     timeCreated: { type: Date, default: Date.now },
     resetPasswordToken: String,
