@@ -15,7 +15,7 @@ var post = {
 	    if (req.query.ludiGroup) {
 	      filters['ludiGroup.id'] = req.query.group;
 	    }
-	    if (req.query.story.id) {
+	    if (req.query.story) {
 	      filters['story.id'] = req.query.story;
 	    }
 
