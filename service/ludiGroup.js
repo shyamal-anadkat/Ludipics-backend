@@ -137,7 +137,7 @@ var ludiGroup = {
                   };
                   req.app.db.models.Story.create(fieldsToSet, function(err, story){
                     var time = new Date()
-                    req.app.db.models.User.findByIdAndUpdate(req.user.id,{currentStory:{id:story._id},currentGroup:{id:story.ludiGroup.id, joinTime:time}},{safe: true, upsert: true}, function(err,user){
+                    req.app.db.models.User.findByIdAndUpdate(req.user.id,{$set: {currentStory:{id:story._id},currentGroup:{id:story.ludiGroup.id, joinTime:time}},{safe: true, upsert: true}}, function(err,user){
                       if (err) {
                         return workflow.emit('exception', err);
                       }
