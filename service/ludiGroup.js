@@ -122,7 +122,7 @@ var ludiGroup = {
             if (ludiGroups[i].users.length < 40 && !found){
               found = true;
               // Add the User to that list of LudiCategories
-              req.app.db.models.LudiGroup.findByIdAndUpdate(ludiGroups[i].id,{$push: {"users": {_id: req.user.id, name: req.user.username}}},{safe: true, upsert: true,'new':true},function(err, ludiGroup) {
+              req.app.db.models.LudiGroup.findByIdAndUpdate(ludiGroups[i].id,{$push: {"users": {_id: req.user.id, "name": req.user.username}}},{safe: true, upsert: true,'new':true},function(err, ludiGroup) {
                   if (err) {
                     return workflow.emit('exception', err);
                   }
@@ -137,7 +137,7 @@ var ludiGroup = {
                   };
                   req.app.db.models.Story.create(fieldsToSet, function(err, story){
                     var time = new Date()
-                    req.app.db.models.User.findByIdAndUpdate(req.user.id,{"$set": {currentStory:{id:story._id},currentGroup:{id:story.ludiGroup.id, joinTime:time}},{safe: true, upsert: true}}, function(err,user){
+                    req.app.db.models.User.findByIdAndUpdate(req.user.id,{$set: {"currentStory":{"id":story._id},"currentGroup":{"id":story.ludiGroup.id, "joinTime":time}}},{safe: true, upsert: true}, function(err,user){
                       if (err) {
                         return workflow.emit('exception', err);
                       }
