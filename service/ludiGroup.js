@@ -166,7 +166,7 @@ var ludiGroup = {
         if (err) {
           return workflow.emit('exception', err);
         }
-        var time = new Date()
+        var time = new Date();
         var fieldsToSet = {
           user: {
             id: req.user.id,
@@ -278,9 +278,7 @@ var ludiGroup = {
         workflow.emit('response');
       });
     });
-
     workflow.emit('validate');
   }
-
 };
 module.exports = ludiGroup;
