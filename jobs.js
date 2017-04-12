@@ -45,14 +45,20 @@ function makeHighlightsForLudiCategoryForDay(app,day,daily,ludiCategory){
 			// This is janky. Because there's a callback inside of this loop, you can't actually access the ludiGroup that you're making the
 			// Post calls id. This is fine because we don't need anymore information about the group at this point.
 			for (var j = 0; j < ludiGroups.length; j++){
-				app.db.models.Post.find({"ludiGroup.id":ludiGroups[j].id,"timeCreated":{"$gte": day}},function(err, posts){
+				app.db.models.Post.find({"ludiGroup.id":ludiGroups[j]._id},function(err, posts){
+					console.log("number of posts")
+					console.log(posts.length)
 					if (posts){
 						var topPost = -1
 						for (var k = 0; k < posts.length; k++){
-							if (topPost == -1 || posts[k].votes.length > topPost.votes.length){
+							console.log("upvotes: ")
+							console.log(posts[k].votes.length)
+							if (topPost == -1 || posts[k].votes.length >= topPost.votes.length){
 								topPost = posts[k];
 							}
 						}
+						console.log("top post id")
+						console.log(topPost._id)
 						// This isn't even in the Mongoose documentation. The '$' allow you to reference an index of an array.
 						app.db.models.Daily.findOneAndUpdate(
 							{"_id":daily._id,"ludiCategories._id":ludiCategory._id},
@@ -67,6 +73,8 @@ function makeHighlightsForLudiCategoryForDay(app,day,daily,ludiCategory){
 								}
 							}					
 						);
+					}else {
+						console.log("no posts")
 					}
 				});
 			}
