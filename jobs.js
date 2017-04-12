@@ -40,14 +40,13 @@ function makeDailyIfNone(app,ludiCategories,date){
 
 // Where the 'Magic' happens for highlights
 function makeHighlightsForLudiCategoryForDay(app,day,daily,ludiCategory){
-	app.db.models.LudiGroup.find({"ludiCategory.id":ludiCategory._id,"timeCreated":{"$gte": day}},function(err, ludiGroups){
+	app.db.models.LudiGroup.find({"ludiCategory.id":ludiCategory._id},function(err, ludiGroups){
 		if (ludiGroups){
 			// This is janky. Because there's a callback inside of this loop, you can't actually access the ludiGroup that you're making the
 			// Post calls id. This is fine because we don't need anymore information about the group at this point.
 			for (var j = 0; j < ludiGroups.length; j++){
+				console.log(ludiGroups[j]._id)
 				app.db.models.Post.find({"ludiGroup.id":ludiGroups[j]._id},function(err, posts){
-					console.log("number of posts")
-					console.log(posts.length)
 					if (posts){
 						var topPost = -1
 						for (var k = 0; k < posts.length; k++){
@@ -57,22 +56,22 @@ function makeHighlightsForLudiCategoryForDay(app,day,daily,ludiCategory){
 								topPost = posts[k];
 							}
 						}
-						console.log("top post id")
-						console.log(topPost._id)
 						// This isn't even in the Mongoose documentation. The '$' allow you to reference an index of an array.
-						app.db.models.Daily.findOneAndUpdate(
-							{"_id":daily._id,"ludiCategories._id":ludiCategory._id},
-							{ 
-								"$push": {
-            						"ludiCategories.$.highlights": {"_id": topPost._id}
-        						}
-							},
-							function(err,d){
-								if (err){
-									console.log(err);
-								}
-							}					
-						);
+						if (topPost != -1){
+							app.db.models.Daily.findOneAndUpdate(
+								{"_id":daily._id,"ludiCategories._id":ludiCategory._id},
+								{ 
+									"$push": {
+            							"ludiCategories.$.highlights": {"_id": topPost._id}
+        							}
+								},
+								function(err,d){
+									if (err){
+										console.log(err);
+									}
+								}					
+							);
+						}
 					}else {
 						console.log("no posts")
 					}
@@ -108,7 +107,7 @@ exports = module.exports = function(app, schedule) {
 	schedule.scheduleJob('0 0 0 * * *', function(){
 		console.log("Generating Highlights")
 		var yesterday = new Date();
-		yesterday.setDate(yesterday.getDate() - 1);
+		yesterday.setDate(yesterday.getDate());
 		yesterday.setHours(0,0,0,0);
 		yesterday.toISOString();
 		app.db.models.Daily.findOne({'date':yesterday}, function(err, daily){
