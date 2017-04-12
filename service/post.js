@@ -13,7 +13,7 @@ var post = {
 	      filters['user.id'] =  req.query.user;
 	    } 
 	    if (req.query.ludiGroup) {
-	      filters['ludiGroup.id'] = req.query.group;
+	      filters['ludiGroup.id'] = req.query.ludiGroup;
 	    }
 	    if (req.query.story) {
 	      filters['story.id'] = req.query.story;
