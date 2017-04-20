@@ -81,21 +81,29 @@ function makeHighlightsForLudiCategoryForDay(app,day,daily,ludiCategory){
 	});
 }
 
+function getCDTDate() {
+	var date = new Date();
+	// 5 is the hour offset from UTC to CDT
+	date.setHours(date.getUTCHours()-date.getTimezoneOffset()/60);
+	return date;
+}
 
 exports = module.exports = function(app, schedule) {
+
+	var UTCOffset = date.getTimezoneOffset()/60;
 	// Daily creation
-	// Runs at 00:00:01
-	schedule.scheduleJob('1 0 0 * * *', function(){
+	// Runs at 00:00:01 CDT
+	schedule.scheduleJob('0 0 ' + UTCOffset + ' * * *', function(){
 		console.log('Creating Daily');
 		app.db.models.LudiCategory.find({},function (err, ludiCategories) {
 			if (err) {
 				console.log(err);
 			}
-			var start = new Date();
+			var start = getCDTDate();
 			start.setHours(0,0,0,0);
 			// Check up to 40 days in the future
 			for (var i=0; i < 40; i++){
-				var d = new Date();
+				var d = getCDTDate();
 				d.setDate(start.getDate() + i);
 				d.setHours(0,0,0,0);
 				makeDailyIfNone(app,ludiCategories,d);
@@ -106,7 +114,7 @@ exports = module.exports = function(app, schedule) {
 	// Runs at 00:00:00
 	schedule.scheduleJob('0 0 0 * * *', function(){
 		console.log("Generating Highlights")
-		var yesterday = new Date();
+		var yesterday = getCDTDate();
 		yesterday.setDate(yesterday.getDate());
 		yesterday.setHours(0,0,0,0);
 		yesterday.toISOString();
