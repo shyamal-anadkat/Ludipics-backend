@@ -93,7 +93,7 @@ exports = module.exports = function(app, schedule) {
 	var UTCOffset = date.getTimezoneOffset()/60;
 	// Daily creation
 	// Runs at 00:00:01 CDT
-	schedule.scheduleJob('0 0 ' + UTCOffset + ' * * *', function(){
+	schedule.scheduleJob('1 0 ' + UTCOffset + ' * * *', function(){
 		console.log('Creating Daily');
 		app.db.models.LudiCategory.find({},function (err, ludiCategories) {
 			if (err) {
@@ -112,7 +112,7 @@ exports = module.exports = function(app, schedule) {
 	});
 	// Highlights high level
 	// Runs at 00:00:00
-	schedule.scheduleJob('0 0 0 * * *', function(){
+	schedule.scheduleJob('0 0 ' + UTCOFfset + '0 * * *', function(){
 		console.log("Generating Highlights")
 		var yesterday = getCDTDate();
 		yesterday.setDate(yesterday.getDate());
