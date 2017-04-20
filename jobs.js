@@ -89,10 +89,10 @@ function getCDTDate() {
 }
 
 exports = module.exports = function(app, schedule) {
-	// 5 is the offset from UTC to CDT: 
-	var UTCOffset = -(new Date().getTimezoneOffset()/60) + 5;
+	// 5 is the offset from UTC to CDT, and we want 4am
+	var UTCOffset = -(new Date().getTimezoneOffset() / 60) + 5 + 4;
 	// Daily creation
-	// Runs at 00:00:01 CDT
+	// Runs at 04:00:01 CDT
 	schedule.scheduleJob('1 0 ' + UTCOffset + ' * * *', function(){
 		console.log('Creating Daily');
 		app.db.models.LudiCategory.find({},function (err, ludiCategories) {
