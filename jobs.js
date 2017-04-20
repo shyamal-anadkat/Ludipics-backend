@@ -89,8 +89,8 @@ function getCDTDate() {
 }
 
 exports = module.exports = function(app, schedule) {
-
-	var UTCOffset = new Date().getTimezoneOffset()/60;
+	// 5 is the offset from UTC to CDT: 
+	var UTCOffset = -(new Date().getTimezoneOffset()/60) + 5;
 	// Daily creation
 	// Runs at 00:00:01 CDT
 	schedule.scheduleJob('1 0 ' + UTCOffset + ' * * *', function(){
