@@ -90,7 +90,7 @@ function getCDTDate() {
 
 exports = module.exports = function(app, schedule) {
 
-	var UTCOffset = date.getTimezoneOffset()/60;
+	var UTCOffset = new Date().getTimezoneOffset()/60;
 	// Daily creation
 	// Runs at 00:00:01 CDT
 	schedule.scheduleJob('1 0 ' + UTCOffset + ' * * *', function(){
@@ -112,7 +112,7 @@ exports = module.exports = function(app, schedule) {
 	});
 	// Highlights high level
 	// Runs at 00:00:00
-	schedule.scheduleJob('0 0 ' + UTCOFfset + '0 * * *', function(){
+	schedule.scheduleJob('0 0 ' + UTCOffset + '0 * * *', function(){
 		console.log("Generating Highlights")
 		var yesterday = getCDTDate();
 		yesterday.setDate(yesterday.getDate());
