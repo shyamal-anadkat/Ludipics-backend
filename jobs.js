@@ -48,7 +48,7 @@ function makeHighlightsForLudiCategoryForDay(app,day,daily,ludiCategory){
 				console.log(ludiGroups[j]._id)
 				app.db.models.Post.find({"ludiGroup.id":ludiGroups[j]._id},function(err, posts){
 					if (posts){
-						var topPost = -1
+						var topPost = -1;
 						for (var k = 0; k < posts.length; k++){
 							console.log("upvotes: ")
 							console.log(posts[k].votes.length)
@@ -72,7 +72,7 @@ function makeHighlightsForLudiCategoryForDay(app,day,daily,ludiCategory){
 								}					
 							);
 						}
-					}else {
+					} else {
 						console.log("no posts")
 					}
 				});
