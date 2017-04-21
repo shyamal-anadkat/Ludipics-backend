@@ -82,18 +82,17 @@ function makeHighlightsForLudiCategoryForDay(app,day,daily,ludiCategory){
 }
 
 function getCDTDate() {
-	var date = new Date();
-	// 5 is the hour offset from UTC to CDT
-	date.setHours(date.getUTCHours()-date.getTimezoneOffset()/60);
-	return date;
+	var d = new Date();
+	// get the client time, get the server offset to UTC, then subtract offset from UTC to CDT
+	return new Date(d.getTime() + (d.getTimezoneOffset() - 300) * 60 * 1000);
 }
 
 exports = module.exports = function(app, schedule) {
 	// 5 is the offset from UTC to CDT, and we want 4am
-	var UTCOffset = -(new Date().getTimezoneOffset() / 60) + 5 + 4;
+	var offset = -(new Date().getTimezoneOffset() / 60) + 5 + 4;
 	// Daily creation
 	// Runs at 04:00:01 CDT
-	schedule.scheduleJob('1 0 ' + UTCOffset + ' * * *', function(){
+	schedule.scheduleJob('1 0 ' + offset + ' * * *', function(){
 		console.log('Creating Daily');
 		app.db.models.LudiCategory.find({},function (err, ludiCategories) {
 			if (err) {
@@ -112,7 +111,7 @@ exports = module.exports = function(app, schedule) {
 	});
 	// Highlights high level
 	// Runs at 00:00:00
-	schedule.scheduleJob('0 0 ' + UTCOffset + '0 * * *', function(){
+	schedule.scheduleJob('0 0 ' + offset + '0 * * *', function(){
 		console.log("Generating Highlights")
 		var yesterday = getCDTDate();
 		yesterday.setDate(yesterday.getDate());
