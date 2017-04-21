@@ -88,7 +88,7 @@ function getCDTDate() {
 }
 
 exports = module.exports = function(app, schedule) {
-	// 5 is the offset from UTC to CDT, and we want 4am
+	// server offset to UTC, CDT to UTC offset, and we want 4AM
 	var offset = -(new Date().getTimezoneOffset() / 60) + 5 + 4;
 	// Daily creation
 	// Runs at 04:00:01 CDT
