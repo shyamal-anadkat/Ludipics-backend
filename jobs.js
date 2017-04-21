@@ -83,12 +83,12 @@ function makeHighlightsForLudiCategoryForDay(app,day,daily,ludiCategory){
 
 function getCDTDate() {
 	var d = new Date();
-	// get the client time, get the server offset to UTC, then subtract offset from UTC to CDT
+	// Get the client time, get the server offset to UTC, then subtract offset from UTC to CDT
 	return new Date(d.getTime() + (d.getTimezoneOffset() - 300) * 60 * 1000);
 }
 
 exports = module.exports = function(app, schedule) {
-	// server offset to UTC, CDT to UTC offset, and we want 4AM
+	// Server offset to UTC, CDT to UTC offset, and we want 4AM
 	var offset = -(new Date().getTimezoneOffset() / 60) + 5 + 4;
 	// Daily creation
 	// Runs at 04:00:01 CDT
