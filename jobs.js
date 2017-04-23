@@ -48,7 +48,7 @@ function makeHighlightsForLudiCategoryForDay(app,day,daily,ludiCategory){
 				console.log(ludiGroups[j]._id)
 				app.db.models.Post.find({"ludiGroup.id":ludiGroups[j]._id},function(err, posts){
 					if (posts){
-						var topPost = -1
+						var topPost = -1;
 						for (var k = 0; k < posts.length; k++){
 							console.log("upvotes: ")
 							console.log(posts[k].votes.length)
@@ -72,7 +72,7 @@ function makeHighlightsForLudiCategoryForDay(app,day,daily,ludiCategory){
 								}					
 							);
 						}
-					}else {
+					} else {
 						console.log("no posts")
 					}
 				});
@@ -81,21 +81,28 @@ function makeHighlightsForLudiCategoryForDay(app,day,daily,ludiCategory){
 	});
 }
 
+function getCDTDate() {
+	var d = new Date();
+	// Get the client time, get the server offset to UTC, then subtract offset from UTC to CDT
+	return new Date(d.getTime() + (d.getTimezoneOffset() - 300) * 60 * 1000);
+}
 
 exports = module.exports = function(app, schedule) {
+	// Server offset to UTC, CDT to UTC offset, and we want 4AM
+	var offset = -(new Date().getTimezoneOffset() / 60) + 5 + 4;
 	// Daily creation
-	// Runs at 00:00:01
-	schedule.scheduleJob('1 0 0 * * *', function(){
+	// Runs at 04:00:01 CDT
+	schedule.scheduleJob('1 0 ' + offset + ' * * *', function(){
 		console.log('Creating Daily');
 		app.db.models.LudiCategory.find({},function (err, ludiCategories) {
 			if (err) {
 				console.log(err);
 			}
-			var start = new Date();
+			var start = getCDTDate();
 			start.setHours(0,0,0,0);
 			// Check up to 40 days in the future
 			for (var i=0; i < 40; i++){
-				var d = new Date();
+				var d = getCDTDate();
 				d.setDate(start.getDate() + i);
 				d.setHours(0,0,0,0);
 				makeDailyIfNone(app,ludiCategories,d);
@@ -104,9 +111,9 @@ exports = module.exports = function(app, schedule) {
 	});
 	// Highlights high level
 	// Runs at 00:00:00
-	schedule.scheduleJob('0 0 0 * * *', function(){
+	schedule.scheduleJob('0 0 ' + offset + '0 * * *', function(){
 		console.log("Generating Highlights")
-		var yesterday = new Date();
+		var yesterday = getCDTDate();
 		yesterday.setDate(yesterday.getDate());
 		yesterday.setHours(0,0,0,0);
 		yesterday.toISOString();
